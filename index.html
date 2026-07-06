@@ -167,7 +167,14 @@ body { font-family: 'Inter', sans-serif; overflow-x: hidden; scroll-behavior: sm
 }
 .lang-switch-btn .active-lang {
     color: #60a5fa;
-}
+}/* Event & Spotlight carousels */
+.event-carousel-container { position: relative; overflow: hidden; }
+.event-carousel-track { transition: transform 0.5s ease-in-out; }
+.event-carousel-container img { min-width: 100%; height: 100%; object-fit: cover; }
+.spotlight-carousel-container { position: relative; overflow: hidden; }
+.spotlight-carousel-track { transition: transform 0.5s ease-in-out; }
+.spotlight-carousel-track img { min-width: 100%; height: 100%; object-fit: contain; background: #0f172a; aspect-ratio: 16/10; }
+.spotlight-carousel-indicator button { transition: all 0.3s ease; }
 
 </style>
 </head>
@@ -292,17 +299,26 @@ body { font-family: 'Inter', sans-serif; overflow-x: hidden; scroll-behavior: sm
             </div>
         </div>
         <div class="grid md:grid-cols-3 gap-6 fade-in">
-            <div class="feature-card bg-slate-800/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700 cursor-pointer" onclick="openEventGallery('whale-tour')">
-                <div class="aspect-video"><img src="public/images/events/whale-tour/2026_005_2020鲸彩之旅.jpg" alt="Whale-onderful Tour" class="w-full h-full object-cover" onerror="this.style.display='none'" /></div>
-                <div class="p-5"><h3 class="text-lg font-bold text-white mb-1 event-card-title" data-event="whale-tour">Whale-onderful Tour</h3><p class="text-slate-400 text-xs leading-relaxed event-card-sub" data-event="whale-tour">Engage beyond borders! Virtual events & interactive sessions uniting our global community.</p></div>
+            <div class="feature-card bg-slate-800/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700">
+                <div class="aspect-video event-carousel-container" data-event="whale-tour">
+                    <div class="event-carousel-track flex transition-transform duration-500 ease-in-out h-full" id="ec-whale-tour"></div>
+                    <div class="event-carousel-indicator absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5" id="eci-whale-tour"></div>
+                </div>
+                <div class="p-5 cursor-pointer" onclick="openEventGallery('whale-tour')"><h3 class="text-lg font-bold text-white mb-1 event-card-title" data-event="whale-tour">Whale-onderful Tour</h3><p class="text-slate-400 text-xs leading-relaxed event-card-sub" data-event="whale-tour">Engage beyond borders! Virtual events & interactive sessions uniting our global community.</p></div>
             </div>
-            <div class="feature-card bg-slate-800/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700 cursor-pointer" onclick="openEventGallery('822-day')">
-                <div class="aspect-video"><img src="public/images/events/822-day/822_015_印度2 (2).jpg" alt="822 iWhale Day" class="w-full h-full object-cover" onerror="this.style.display='none'" /></div>
-                <div class="p-5"><h3 class="text-lg font-bold text-white mb-1 event-card-title" data-event="822-day">822 iWhale Day</h3><p class="text-slate-400 text-xs leading-relaxed event-card-sub" data-event="822-day">Our annual celebration of innovation, unity & Whale Cloud pride worldwide.</p></div>
+            <div class="feature-card bg-slate-800/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700">
+                <div class="aspect-video event-carousel-container" data-event="822-day">
+                    <div class="event-carousel-track flex transition-transform duration-500 ease-in-out h-full" id="ec-822-day"></div>
+                    <div class="event-carousel-indicator absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5" id="eci-822-day"></div>
+                </div>
+                <div class="p-5 cursor-pointer" onclick="openEventGallery('822-day')"><h3 class="text-lg font-bold text-white mb-1 event-card-title" data-event="822-day">822 iWhale Day</h3><p class="text-slate-400 text-xs leading-relaxed event-card-sub" data-event="822-day">Our annual celebration of innovation, unity & Whale Cloud pride worldwide.</p></div>
             </div>
-            <div class="feature-card bg-slate-800/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700 cursor-pointer" onclick="openEventGallery('thanksgiving')">
-                <div class="aspect-video"><img src="public/images/events/thanksgiving/04_刚果布感恩节3.png" alt="Thanksgiving" class="w-full h-full object-cover" onerror="this.style.display='none'" /></div>
-                <div class="p-5"><h3 class="text-lg font-bold text-white mb-1 event-card-title" data-event="thanksgiving">Thanksgiving Day</h3><p class="text-slate-400 text-xs leading-relaxed event-card-sub" data-event="thanksgiving">This is the heartbeat of Whale Cloud's vibrant culture — "Diversity inspires us, belonging empowers us."</p></div>
+            <div class="feature-card bg-slate-800/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700">
+                <div class="aspect-video event-carousel-container" data-event="thanksgiving">
+                    <div class="event-carousel-track flex transition-transform duration-500 ease-in-out h-full" id="ec-thanksgiving"></div>
+                    <div class="event-carousel-indicator absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5" id="eci-thanksgiving"></div>
+                </div>
+                <div class="p-5 cursor-pointer" onclick="openEventGallery('thanksgiving')"><h3 class="text-lg font-bold text-white mb-1 event-card-title" data-event="thanksgiving">Thanksgiving Day</h3><p class="text-slate-400 text-xs leading-relaxed event-card-sub" data-event="thanksgiving">This is the heartbeat of Whale Cloud's vibrant culture — "Diversity inspires us, belonging empowers us."</p></div>
             </div>
         </div>
     </div>
@@ -318,7 +334,18 @@ body { font-family: 'Inter', sans-serif; overflow-x: hidden; scroll-behavior: sm
         </div>
         <div class="mb-16 fade-in">
             <h3 class="text-2xl font-bold text-white mb-8 uppercase tracking-tight text-center">2026 <span class="text-slate-600">|</span> <span class="text-slate-400 text-lg" data-i18n="spotlight.2026sub">Value Contributors</span></h3>
-            <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="spotlight-2026-grid"></div>
+            <div class="max-w-3xl mx-auto">
+                <div class="spotlight-carousel-container relative rounded-2xl overflow-hidden border border-slate-700 shadow-xl">
+                    <div class="spotlight-carousel-track flex transition-transform duration-500 ease-in-out" id="spotlight-2026-carousel"></div>
+                    <button onclick="spotlightPrev()" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-slate-800/80 hover:bg-slate-700 rounded-full flex items-center justify-center text-white transition z-10">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <button onclick="spotlightNext()" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-slate-800/80 hover:bg-slate-700 rounded-full flex items-center justify-center text-white transition z-10">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                    <div class="spotlight-carousel-indicator absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5" id="spotlight-2026-indicator"></div>
+                </div>
+            </div>
         </div>
         <div class="fade-in">
             <h3 class="text-2xl font-bold text-white mb-8 uppercase tracking-tight text-center">2025 <span class="text-slate-600">|</span> <span class="text-slate-400 text-lg" data-i18n="spotlight.2025sub">Full Year Honorees</span></h3>
@@ -654,7 +681,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (document.getElementById('carousel-track')) initCarousel();
         if (document.getElementById('country-cards')) renderCountryCards();
         if (document.getElementById('spotlight-2025-grid')) renderSpotlight2025();
-        if (document.getElementById('spotlight-2026-grid')) renderSpotlight2026();
+        if (document.getElementById('spotlight-2026-carousel')) renderSpotlight2026();
+        if (document.querySelector('.event-carousel-container')) initEventCardCarousels();
     });
 
     setTimeout(() => {
@@ -859,14 +887,105 @@ function renderSpotlight2025() {
 }
 
 function renderSpotlight2026() {
-    var grid = document.getElementById('spotlight-2026-grid');
+    var grid = document.getElementById('spotlight-2026-carousel');
     if (!grid) return;
     var posters = window.spotlight2026Images || [];
     if (posters.length === 0) return;
     grid.innerHTML = posters.map(function(src, i) {
-        return '<div class="aspect-[4/3] rounded-lg overflow-hidden border border-slate-700 cursor-pointer hover:border-blue-500 transition-all bg-slate-900" onclick="openLightbox(window._spot2026,' + i + ')"><div class="spotlight-img-container w-full h-full"><img src="' + src + '" alt="" class="w-full h-full object-contain hover:scale-105 transition-transform duration-500" loading="lazy" /></div></div>';
+        return '<img src="' + src + '" alt="" class="w-full h-full object-contain hover:scale-105 transition-transform duration-500" loading="lazy" onclick="openLightbox(window._spot2026,' + i + ')" />';
     }).join('');
     window._spot2026 = posters;
+    window._spotlight2026Index = 0;
+
+    // Render indicator
+    var indicator = document.getElementById('spotlight-2026-indicator');
+    if (indicator) {
+        indicator.innerHTML = posters.map(function(_, i) {
+            return '<button class="h-2 rounded-full transition-all ' + (i === 0 ? 'w-6 bg-blue-500' : 'w-2 bg-white/40') + '" onclick="spotlightGoTo(' + i + ')"></button>';
+        }).join('');
+    }
+}
+
+var spotlight2026Index = 0;
+var spotlightInterval;
+
+function spotlightGoTo(index) {
+    var track = document.getElementById('spotlight-2026-carousel');
+    var dots = document.querySelectorAll('#spotlight-2026-indicator button');
+    if (!track) return;
+    spotlight2026Index = index;
+    track.style.transform = 'translateX(-' + (index * 100) + '%)';
+    dots.forEach(function(d, i) {
+        d.classList.toggle('w-6', i === index);
+        d.classList.toggle('w-2', i !== index);
+        d.classList.toggle('bg-blue-500', i === index);
+        d.classList.toggle('bg-white/40', i !== index);
+    });
+    clearInterval(spotlightInterval);
+    spotlightInterval = setInterval(spotlightNext, 4000);
+}
+
+function spotlightNext() {
+    var posters = window.spotlight2026Images || [];
+    spotlight2026Index = (spotlight2026Index + 1) % posters.length;
+    spotlightGoTo(spotlight2026Index);
+}
+
+function spotlightPrev() {
+    var posters = window.spotlight2026Images || [];
+    spotlight2026Index = (spotlight2026Index - 1 + posters.length) % posters.length;
+    spotlightGoTo(spotlight2026Index);
+}
+
+// Event card mini carousels
+function initEventCardCarousels() {
+    ['whale-tour', '822-day', 'thanksgiving'].forEach(function(evtId) {
+        var track = document.getElementById('ec-' + evtId);
+        var indicator = document.getElementById('eci-' + evtId);
+        var images = eventData[evtId] ? eventData[evtId].images : [];
+        if (!track || !images.length) return;
+
+        // Use first 5 images for carousel
+        var carouselImgs = images.slice(0, 5);
+        track.innerHTML = carouselImgs.map(function(src) {
+            return '<img src="' + src + '" alt="" class="w-full h-full object-cover" loading="lazy" />';
+        }).join('');
+        track.parentElement.setAttribute('data-count', carouselImgs.length);
+        track.parentElement.setAttribute('data-idx', '0');
+
+        if (indicator && carouselImgs.length > 1) {
+            indicator.innerHTML = carouselImgs.map(function(_, i) {
+                return '<button class="h-1.5 rounded-full transition-all ' + (i === 0 ? 'w-4 bg-blue-500' : 'w-1.5 bg-white/50') + '"></button>';
+            }).join('');
+        }
+    });
+
+    // Start auto-cycling each event card mini carousel
+    setInterval(function() {
+        ['whale-tour', '822-day', 'thanksgiving'].forEach(function(evtId) {
+            var container = document.querySelector('.event-carousel-container[data-event="' + evtId + '"]');
+            if (!container) return;
+            var count = parseInt(container.getAttribute('data-count')) || 1;
+            if (count <= 1) return;
+            var idx = parseInt(container.getAttribute('data-idx')) || 0;
+            idx = (idx + 1) % count;
+            container.setAttribute('data-idx', idx);
+
+            var track = document.getElementById('ec-' + evtId);
+            if (track) track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+
+            var dots = document.querySelectorAll('#eci-' + evtId + ' button');
+            dots.forEach(function(d, i) {
+                d.classList.toggle('w-4', i === idx);
+                d.classList.toggle('w-1.5', i !== idx);
+                d.classList.toggle('bg-blue-500', i === idx);
+                d.classList.toggle('bg-white/50', i !== idx);
+            });
+        });
+    }, 3000);
+
+    // Start spotlight auto-cycle
+    spotlightInterval = setInterval(spotlightNext, 4000);
 }
 
 </script>
