@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whale Cloud | Global Culture Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+
+:root {
+    --whale-dark: #020617;
+    --whale-blue: #1e293b;
+    --accent-blue: #3b82f6;
+    --accent-cyan: #06b6d4;
+    --accent-purple: #8b5cf6;
+}
+
+.bg-whale-dark { background-color: var(--whale-dark); }
+
+.gradient-bg {
+    background: linear-gradient(-45deg, #020617, #0f172a, #1e293b, #020617);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.spotlight-font { font-family: 'Orbitron', sans-serif; letter-spacing: 0.1em; }
+
+.map-container {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.world-map-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('public/images/map.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.9;
+}
+
+@keyframes pulse-blue {
+    0%, 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+}
+.marker-pulse { animation: pulse-blue 2s infinite; }
+
+.glow-blue { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.3); }
+
+.carousel-container { position: relative; overflow: hidden; }
+.carousel-track { display: flex; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.carousel-slide { min-width: 100%; }
+
+.feature-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.feature-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2); }
+
+.fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+.modal-content { animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+@keyframes modalSlideIn {
+    from { opacity: 0; transform: scale(0.95) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.ripple-btn { position: relative; overflow: hidden; }
+.ripple-btn::after {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    width: 0; height: 0; background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%; transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+.ripple-btn:hover::after { width: 300px; height: 300px; }
+
+.spotlight-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #020617 100%);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    position: relative; overflow: hidden;
+}
+.spotlight-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, #3b82f6, #06b6d4, #8b5cf6);
+}
+
+.spotlight-img-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0f172a;
+}
+.spotlight-img-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.particle {
+    position: absolute;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+    animation: float 20s infinite;
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 0.5; }
+    90% { opacity: 0.5; }
+    100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+}
+
+.stat-number { font-variant-numeric: tabular-nums; }
+
+.region-badge {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    backdrop-filter: blur(4px);
+}
+
+/* Navigation active state */
+.nav-link.active {
+    color: #60a5fa !important;
+}
+
+/* Video in lightbox */
+.lightbox-video {
+    max-width: 90vw;
+    max-height: 85vh;
+    border-radius: 12px;
+}
+
+/* Language Switcher */
+.lang-switch-btn {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 6px 14px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+.lang-switch-btn:hover {
+    border-color: #60a5fa;
+    color: #60a5fa;
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+}
+.lang-switch-btn .lang-divider {
+    margin: 0 4px;
+    color: rgba(148, 163, 184, 0.4);
+}
+.lang-switch-btn .active-lang {
+    color: #60a5fa;
+}
+
+</style>
+</head>
+<body class="bg-whale-dark text-slate-200">
+
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<nav class="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+        <a href="#home" class="flex items-center gap-3">
+            <img src="public/images/logo.png" alt="Whale Cloud" class="h-10 w-auto object-contain">
+            <span class="text-[10px] text-slate-400 uppercase tracking-widest hidden sm:inline">Global Culture Hub</span>
+        </a>
+        <div class="flex items-center gap-4">
+            <div class="hidden md:flex items-center space-x-6 text-xs font-semibold uppercase tracking-widest text-slate-400">
+                <a href="#home" class="nav-link hover:text-blue-400 transition-colors" data-i18n="nav.home">Home</a>
+                <a href="#events" class="nav-link hover:text-blue-400 transition-colors" data-i18n="nav.events">Events</a>
+                <a href="#spotlight" class="nav-link hover:text-blue-400 transition-colors" data-i18n="nav.spotlight">Spotlight</a>
+                <a href="#contact" class="nav-link hover:text-blue-400 transition-colors" data-i18n="nav.contact">Contact</a>
+            </div>
+            <!-- Language Switcher -->
+            <button class="lang-switch-btn" onclick="toggleLanguage()" id="lang-switch-btn">
+                <span class="active-lang">EN</span><span class="lang-divider">/</span><span>中文</span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile nav -->
+<div class="md:hidden fixed bottom-0 w-full z-50 bg-slate-950/95 backdrop-blur-md border-t border-slate-800">
+    <div class="flex justify-around py-3">
+        <a href="#home" class="nav-link flex flex-col items-center text-[10px] text-slate-400 uppercase tracking-wider" data-i18n="nav.home">Home</a>
+        <a href="#events" class="nav-link flex flex-col items-center text-[10px] text-slate-400 uppercase tracking-wider" data-i18n="nav.events">Events</a>
+        <a href="#spotlight" class="nav-link flex flex-col items-center text-[10px] text-slate-400 uppercase tracking-wider" data-i18n="nav.spotlight">Spotlight</a>
+        <a href="#contact" class="nav-link flex flex-col items-center text-[10px] text-slate-400 uppercase tracking-wider" data-i18n="nav.contact">Contact</a>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<section id="home" class="relative min-h-screen gradient-bg overflow-hidden flex items-center justify-center py-20">
+    <div id="particles-container" class="absolute inset-0"></div>
+    <div class="container mx-auto px-6 text-center z-10 relative max-w-5xl">
+        <div class="inline-flex items-center gap-2 bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-full px-4 py-2 mb-6 fade-in">
+            <span class="text-xs font-medium text-slate-300 uppercase tracking-wider" data-i18n="hero.tagline">AI-First, International-First</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-4 tracking-tighter uppercase fade-in" data-i18n="hero.title">Whale Cloud</h1>
+        <p class="text-slate-400 max-w-2xl mx-auto text-sm md:text-base font-light mb-6 fade-in leading-relaxed" data-i18n="hero.desc">Founded in 2003, Whale Cloud is a global leader in providing full-stack digital and intelligent capabilities. Dedicated to building productivity for the intelligent era, we drive productivity transformation through our "AI-First, International-First" strategy. Today, we serve more than 150 leading telecom operators and 800+ industry customers across over 80 countries and regions, enabling a more efficient and sustainable society worldwide.</p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 fade-in">
+            <a href="#countries" class="ripple-btn bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white px-6 py-3 rounded-full text-xs font-bold transition-all uppercase tracking-wider glow-blue flex items-center gap-2">
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span data-i18n="hero.explore">Explore Our World</span>
+            </a>
+            <a href="#spotlight" class="ripple-btn bg-slate-800 hover:bg-slate-700 text-white px-6 py-3 rounded-full text-xs font-bold transition-all uppercase tracking-wider border border-slate-700 flex items-center gap-2">
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span data-i18n="hero.meetStars">Meet Our Stars</span>
+            </a>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-10 max-w-3xl mx-auto fade-in stats-grid">
+            <div class="feature-card bg-slate-800/30 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
+                <div class="text-3xl font-bold text-blue-400 stat-number" data-target="80">0</div>
+                <div class="text-[10px] text-slate-500 uppercase tracking-widest mt-1" data-i18n="stats.countries">Countries &amp; Regions</div>
+            </div>
+            <div class="feature-card bg-slate-800/30 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
+                <div class="text-3xl font-bold text-cyan-400 stat-number" data-target="8900">0+</div>
+                <div class="text-[10px] text-slate-500 uppercase tracking-widest mt-1" data-i18n="stats.employees">Total Employees</div>
+            </div>
+            <div class="feature-card bg-slate-800/30 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
+                <div class="text-3xl font-bold text-cyan-400 stat-number" data-target="200">0+</div>
+                <div class="text-[10px] text-slate-500 uppercase tracking-widest mt-1" data-i18n="stats.events">Events/Year</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- World Map Section -->
+<section id="map" class="min-h-screen flex items-center py-12 bg-gradient-to-b from-whale-dark via-slate-900 to-whale-dark relative overflow-hidden">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-8 fade-in">
+            <span class="text-blue-500 text-xs font-bold uppercase tracking-widest" data-i18n="map.label">Our Presence</span>
+            <h2 class="text-2xl md:text-4xl font-extrabold text-white mt-2 mb-4 uppercase tracking-tight">
+                <span data-i18n="map.title">Global Atlas</span>
+            </h2>
+            <p class="text-slate-400 max-w-xl mx-auto text-sm md:text-base font-light" data-i18n="map.desc">Click on any location to discover how Whale Cloud empowers local digital transformation.</p>
+        </div>
+        <div class="relative w-full max-w-5xl mx-auto h-[400px] md:h-[500px] map-container rounded-3xl border border-slate-700 shadow-xl overflow-hidden fade-in">
+            <div class="world-map-bg"></div>
+            <div id="markers-container" class="relative w-full h-full"></div>
+            <div id="map-loading" class="absolute inset-0 bg-slate-900/90 flex items-center justify-center z-50">
+                <div class="flex flex-col items-center gap-4">
+                    <div class="w-[50px] h-[50px] border-[3px] border-blue-500/30 rounded-full border-t-blue-500 animate-spin"></div>
+                    <span class="text-slate-400 text-sm uppercase tracking-widest">Loading Map...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Country Cards Section -->
+<section id="countries" class="min-h-screen flex items-center py-12 bg-gradient-to-b from-whale-dark via-slate-900 to-whale-dark relative overflow-hidden">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-8 fade-in">
+            <h2 class="text-2xl md:text-4xl font-extrabold text-white mt-2 mb-4 uppercase tracking-tight">
+                <span data-i18n="countries.title">Our Global Family</span>
+            </h2>
+            <p class="text-slate-400 max-w-xl mx-auto text-sm md:text-base font-light" data-i18n="countries.desc">Explore our offices across 80+ countries and regions</p>
+        </div>
+        <div id="country-cards" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 fade-in"></div>
+    </div>
+</section>
+
+<!-- Events Section -->
+<section id="events" class="py-24 bg-gradient-to-b from-whale-dark via-slate-900 to-whale-dark relative overflow-hidden">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12 fade-in">
+            <span class="text-blue-500 text-xs font-bold uppercase tracking-widest" data-i18n="events.label">Community</span>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-white mt-2 mb-4 uppercase tracking-tight" data-i18n="events.title">Global Events</h2>
+        </div>
+        <div class="max-w-5xl mx-auto mb-16 fade-in">
+            <div class="carousel-container rounded-3xl overflow-hidden border border-slate-800 shadow-2xl">
+                <div class="carousel-track" id="carousel-track"></div>
+                <div class="carousel-indicator absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" id="carousel-indicator"></div>
+            </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6 fade-in">
+            <div class="feature-card bg-slate-800/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700 cursor-pointer" onclick="openEventGallery('whale-tour')">
+                <div class="aspect-video"><img src="public/images/events/whale-tour/2026_005_2020鲸彩之旅.jpg" alt="Whale-onderful Tour" class="w-full h-full object-cover" onerror="this.style.display='none'" /></div>
+                <div class="p-5"><h3 class="text-lg font-bold text-white mb-1 event-card-title" data-event="whale-tour">Whale-onderful Tour</h3><p class="text-slate-400 text-xs leading-relaxed event-card-sub" data-event="whale-tour">Engage beyond borders! Virtual events & interactive sessions uniting our global community.</p></div>
+            </div>
+            <div class="feature-card bg-slate-800/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700 cursor-pointer" onclick="openEventGallery('822-day')">
+                <div class="aspect-video"><img src="public/images/events/822-day/822_015_印度2 (2).jpg" alt="822 iWhale Day" class="w-full h-full object-cover" onerror="this.style.display='none'" /></div>
+                <div class="p-5"><h3 class="text-lg font-bold text-white mb-1 event-card-title" data-event="822-day">822 iWhale Day</h3><p class="text-slate-400 text-xs leading-relaxed event-card-sub" data-event="822-day">Our annual celebration of innovation, unity & Whale Cloud pride worldwide.</p></div>
+            </div>
+            <div class="feature-card bg-slate-800/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700 cursor-pointer" onclick="openEventGallery('thanksgiving')">
+                <div class="aspect-video"><img src="public/images/events/thanksgiving/04_刚果布感恩节3.png" alt="Thanksgiving" class="w-full h-full object-cover" onerror="this.style.display='none'" /></div>
+                <div class="p-5"><h3 class="text-lg font-bold text-white mb-1 event-card-title" data-event="thanksgiving">Thanksgiving Day</h3><p class="text-slate-400 text-xs leading-relaxed event-card-sub" data-event="thanksgiving">This is the heartbeat of Whale Cloud's vibrant culture — "Diversity inspires us, belonging empowers us."</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Spotlight Section -->
+<section id="spotlight" class="py-24 bg-gradient-to-b from-whale-dark via-slate-900 to-whale-dark relative overflow-hidden">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16 fade-in">
+            <span class="text-blue-500 text-xs font-bold uppercase tracking-widest" data-i18n="spotlight.label">Whale Spotlight</span>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-white mt-2 mb-4 uppercase tracking-tight" data-i18n="spotlight.title">Whale Spotlight</h2>
+            <p class="text-slate-400 max-w-3xl mx-auto text-sm md:text-base font-light leading-relaxed" data-i18n="spotlight.desc">Whale Spotlight celebrates top international employees as role models, sharing their stories to inspire excellence, collaboration, and growth across the company.</p>
+        </div>
+        <div class="mb-16 fade-in">
+            <h3 class="text-2xl font-bold text-white mb-8 uppercase tracking-tight text-center">2026 <span class="text-slate-600">|</span> <span class="text-slate-400 text-lg" data-i18n="spotlight.2026sub">Value Contributors</span></h3>
+            <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="spotlight-2026-grid"></div>
+        </div>
+        <div class="fade-in">
+            <h3 class="text-2xl font-bold text-white mb-8 uppercase tracking-tight text-center">2025 <span class="text-slate-600">|</span> <span class="text-slate-400 text-lg" data-i18n="spotlight.2025sub">Full Year Honorees</span></h3>
+            <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="spotlight-2025-grid"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-24 bg-gradient-to-b from-whale-dark via-slate-900 to-whale-dark relative overflow-hidden">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12 fade-in">
+            <span class="text-blue-500 text-xs font-bold uppercase tracking-widest" data-i18n="contact.label">Join Our Team</span>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-white mt-2 mb-4 uppercase tracking-tight" data-i18n="contact.title">Start Your Whale Cloud Journey</h2>
+            <p class="text-slate-400 max-w-xl mx-auto text-sm md:text-base font-light" data-i18n="contact.desc">Connect with us to explore career opportunities.</p>
+        </div>
+        <div class="flex flex-col items-center fade-in">
+            <div class="bg-white rounded-2xl p-4 w-48 h-48 flex items-center justify-center">
+                <img src="public/images/二维码.png" alt="QR Code" class="w-full h-full object-contain" />
+            </div>
+            <p class="text-slate-400 text-sm mt-4" data-i18n="contact.qr">Scan QR code to contact us</p>
+            <p class="text-slate-500 text-xs mt-1">Ms. Zhenqing (Tracy) F. &mdash; <span data-i18n="contact.manager">Global Recruitment Manager</span></p>
+            <a href="https://www.linkedin.com/in/zhenqing-f-08b869264/" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 mt-3 text-blue-400 hover:text-blue-300 text-xs transition-colors">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                <span data-i18n="contact.linkedin">Hiring Manager LinkedIn Profile</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-6 bg-whale-dark border-t border-slate-800">
+    <div class="container mx-auto px-6 text-center">
+        <p class="text-slate-500 text-xs" data-i18n="footer">&copy; 2026 Whale Cloud. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Country Modal -->
+<div id="country-modal" class="fixed inset-0 z-[100] hidden bg-slate-950/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-10">
+    <div class="modal-content bg-slate-900 w-full max-w-6xl h-full md:h-[85vh] rounded-3xl overflow-hidden relative border border-slate-700 shadow-2xl flex flex-col md:flex-row">
+        <button onclick="closeModal()" class="absolute top-6 right-6 z-10 w-12 h-12 bg-slate-800 hover:bg-slate-700 rounded-full flex items-center justify-center text-white transition">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div class="w-full md:w-1/3 p-8 md:p-10 border-b md:border-b-0 md:border-r border-slate-800 flex flex-col">
+            <div id="modal-tag" class="text-blue-500 font-bold text-xs tracking-widest uppercase mb-2"></div>
+            <h2 id="modal-title" class="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight uppercase leading-none"></h2>
+            <p id="modal-desc" class="text-slate-400 leading-relaxed text-sm md:text-base flex-grow"></p>
+            <div class="grid grid-cols-2 gap-4 mt-6">
+                <div class="bg-slate-800/40 rounded-xl p-4 border border-slate-700">
+                    <div class="text-2xl font-bold text-blue-400" id="modal-employees">-</div>
+                    <div class="text-[10px] text-slate-500 uppercase tracking-wider" data-i18n="modal.employees">Employees</div>
+                </div>
+                <div class="bg-slate-800/40 rounded-xl p-4 border border-slate-700">
+                    <div class="text-2xl font-bold text-cyan-400" id="modal-events">-</div>
+                    <div class="text-[10px] text-slate-500 uppercase tracking-wider" data-i18n="modal.eventsPerYear">Events/Year</div>
+                </div>
+            </div>
+        </div>
+        <div class="w-full md:w-2/3 p-8 md:p-10 overflow-y-auto bg-slate-900/50">
+            <div id="modal-customs" class="mb-8 p-5 bg-slate-800/30 rounded-xl border border-slate-700">
+                <h3 class="text-lg font-bold text-white mb-3 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <span data-i18n="modal.customs">Local Customs &amp; Festivals</span>
+                </h3>
+                <p id="modal-customs-text" class="text-slate-300 text-sm leading-relaxed"></p>
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold text-white tracking-tight uppercase mb-6 flex items-center">
+                <svg class="w-5 h-5 md:w-6 md:h-6 mr-3 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                <span data-i18n="modal.celebrations">Local Celebrations</span>
+            </h3>
+            <div id="image-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="fixed inset-0 z-[120] hidden bg-slate-950/98 backdrop-blur-xl flex items-center justify-center p-4">
+    <button onclick="closeLightbox()" class="absolute top-6 right-6 w-12 h-12 bg-slate-800 hover:bg-slate-700 rounded-full flex items-center justify-center text-white transition z-10">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button onclick="prevLightbox()" class="absolute left-4 w-12 h-12 bg-slate-800 hover:bg-slate-700 rounded-full flex items-center justify-center text-white transition z-10">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button onclick="nextLightbox()" class="absolute right-4 w-12 h-12 bg-slate-800 hover:bg-slate-700 rounded-full flex items-center justify-center text-white transition z-10">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[90vh] object-contain rounded-lg">
+    <video id="lightbox-video" class="lightbox-video hidden" controls>
+        <source src="" type="video/mp4">
+    </video>
+    <div id="lightbox-caption" class="absolute bottom-6 left-1/2 -translate-x-1/2 text-white text-center"></div>
+</div>
+
+<script>
+// ==================== i18n System ====================
+var currentLang = 'en';
+
+var i18n = {
+    'nav.home': { en: 'Home', zh: '首页' },
+    'nav.events': { en: 'Events', zh: '文化活动' },
+    'nav.spotlight': { en: 'Spotlight', zh: '人物风采' },
+    'nav.contact': { en: 'Contact', zh: '联系我们' },
+    'hero.tagline': { en: 'AI-First, International-First', zh: 'AI优先，国际优先' },
+    'hero.title': { en: 'Whale Cloud', zh: '浩鲸科技' },
+    'hero.desc': { en: 'Founded in 2003, Whale Cloud is a global leader in providing full-stack digital and intelligent capabilities. Dedicated to building productivity for the intelligent era, we drive productivity transformation through our "AI-First, International-First" strategy. Today, we serve more than 150 leading telecom operators and 800+ industry customers across over 80 countries and regions, enabling a more efficient and sustainable society worldwide.', zh: '浩鲸科技成立于2003年，是全球领先的全栈数字化和智能化能力提供商。我们致力于构建智能时代的生产力，通过"AI优先、国际优先"战略推动生产力转型。目前，我们服务于全球80多个国家和地区的150多家领先电信运营商和800多家行业客户，助力构建更高效、更可持续的社会。' },
+    'hero.explore': { en: 'Explore Our World', zh: '探索我们的世界' },
+    'hero.meetStars': { en: 'Meet Our Stars', zh: '认识我们的明星' },
+    'stats.countries': { en: 'Countries & Regions', zh: '国家和地区' },
+    'stats.employees': { en: 'Total Employees', zh: '全球员工' },
+    'stats.events': { en: 'Events/Year', zh: '年度活动' },
+    'map.label': { en: 'Our Presence', zh: '我们的足迹' },
+    'map.title': { en: 'Global Atlas', zh: '全球版图' },
+    'map.desc': { en: 'Click on any location to discover how Whale Cloud empowers local digital transformation.', zh: '点击任意地点，了解浩鲸科技如何赋能本地数字化转型。' },
+    'countries.title': { en: 'Our Global Family', zh: '我们的全球大家庭' },
+    'countries.desc': { en: 'Explore our offices across 80+ countries and regions', zh: '探索我们在80多个国家和地区的办公室' },
+    'events.label': { en: 'Community', zh: '社区活动' },
+    'events.title': { en: 'Global Events', zh: '全球活动' },
+    'spotlight.label': { en: 'Whale Spotlight', zh: '人物风采' },
+    'spotlight.title': { en: 'Whale Spotlight', zh: '鲸彩风向标' },
+    'spotlight.desc': { en: 'Whale Spotlight celebrates top international employees as role models, sharing their stories to inspire excellence, collaboration, and growth across the company.', zh: '鲸彩风向标是表彰优秀外籍员工的人才风采展示项目，分享他们的故事，激励全公司追求卓越、协作共进、共同成长。' },
+    'spotlight.2026sub': { en: 'Value Contributors', zh: '价值贡献者' },
+    'spotlight.2025sub': { en: 'Full Year Honorees', zh: '全年荣誉榜' },
+    'contact.label': { en: 'Join Our Team', zh: '加入我们' },
+    'contact.title': { en: 'Start Your Whale Cloud Journey', zh: '开启你的浩鲸之旅' },
+    'contact.desc': { en: 'Connect with us to explore career opportunities.', zh: '联系我们，探索职业机会。' },
+    'contact.qr': { en: 'Scan QR code to contact us', zh: '扫描二维码直接联系我们' },
+    'contact.manager': { en: 'Global Recruitment Manager', zh: '全球招聘经理' },
+    'contact.linkedin': { en: 'Hiring Manager LinkedIn Profile', zh: '招聘经理领英主页' },
+    'footer': { en: '&copy; 2026 Whale Cloud. All rights reserved.', zh: '&copy; 2026 浩鲸科技 版权所有。' },
+    'modal.employees': { en: 'Employees', zh: '员工' },
+    'modal.eventsPerYear': { en: 'Events/Year', zh: '年度活动' },
+    'modal.celebrations': { en: 'Local Celebrations', zh: '当地活动' },
+    'modal.noImages': { en: 'No images yet', zh: '暂无照片' },
+    'modal.customs': { en: 'Local Customs &amp; Festivals', zh: '本地节日与风俗' },
+    'alert.comingSoon': { en: 'Images coming soon!', zh: '该活动照片即将上线！' }
+};
+
+// Event card bilingual titles
+var eventCardTitles = {
+    'whale-tour': { en: 'Whale-onderful Tour', zh: '鲸彩之旅' },
+    '822-day': { en: '822 iWhale Day', zh: '822浩鲸日' },
+    'thanksgiving': { en: 'Thanksgiving Day', zh: '感恩节' }
+};
+
+var eventCardSubs = {
+    'whale-tour': { en: 'Engage beyond borders! Virtual events & interactive sessions uniting our global community.', zh: '跨越国界！虚拟活动与互动环节将我们的全球社区紧密相连。' },
+    '822-day': { en: 'Our annual celebration of innovation, unity & Whale Cloud pride worldwide.', zh: '我们一年一度的创新、团结与浩鲸自豪感的全球庆典。' },
+    'thanksgiving': { en: 'This is the heartbeat of Whale Cloud\'s vibrant culture — "Diversity inspires us, belonging empowers us."', zh: '这是浩鲸科技活力文化的心跳——"多元激励我们，归属赋予我们力量。"感恩每一位员工的付出。' }
+};
+
+function applyTranslations() {
+    // Update all data-i18n elements
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        if (i18n[key] && i18n[key][currentLang]) {
+            el.innerHTML = i18n[key][currentLang];
+        }
+    });
+
+    // Update event cards
+    document.querySelectorAll('.event-card-title').forEach(function(el) {
+        var evt = el.getAttribute('data-event');
+        if (eventCardTitles[evt] && eventCardTitles[evt][currentLang]) {
+            el.textContent = eventCardTitles[evt][currentLang];
+        }
+    });
+    document.querySelectorAll('.event-card-sub').forEach(function(el) {
+        var evt = el.getAttribute('data-event');
+        if (eventCardSubs[evt] && eventCardSubs[evt][currentLang]) {
+            el.textContent = eventCardSubs[evt][currentLang];
+        }
+    });
+
+    // Update language switcher button
+    var btn = document.getElementById('lang-switch-btn');
+    if (btn) {
+        if (currentLang === 'en') {
+            btn.innerHTML = '<span class="active-lang">EN</span><span class="lang-divider">/</span><span>中文</span>';
+        } else {
+            btn.innerHTML = '<span>EN</span><span class="lang-divider">/</span><span class="active-lang">中文</span>';
+        }
+    }
+
+    // Update page title
+    document.title = currentLang === 'en' ? 'Whale Cloud | Global Culture Hub' : '浩鲸科技 | 全球文化中心';
+
+    // Update html lang attribute
+    document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-CN';
+
+    // Re-render dynamic sections
+    renderCountryCards();
+    initCarousel();
+
+    // Re-render currently open modal if any
+    if (currentCountryId && !document.getElementById('country-modal').classList.contains('hidden')) {
+        openCountryModal(currentCountryId);
+    }
+}
+
+function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'zh' : 'en';
+    applyTranslations();
+}
+
+// ==================== Country Data ====================
+const countryData = [
+    { id: 'china', name: { en: 'China', zh: '中国' }, flag: '🇨🇳', region: { en: 'Global HQ', zh: '全球总部' }, desc: { en: 'The heart of Whale Cloud innovation and the birthplace of the Fat Whale IP. As our global headquarters, Nanjing drives our AI-First strategy with 8,000+ employees shaping the future of digital transformation.', zh: '浩鲸科技的创新核心和胖鲸IP的发源地。作为全球总部，南京以8000多名员工推动AI优先战略，塑造数字化转型的未来。' }, customs: { en: 'Spring Festival (Chinese New Year) — the most important celebration with family reunions, red envelopes, and dragon dances.\nMid-Autumn Festival — mooncakes, lanterns, and family gatherings under the full moon.\nDragon Boat Festival — racing dragon boats and eating zongzi to honor the poet Qu Yuan.', zh: '春节 — 最重要的节日，家人团聚、发红包、舞龙舞狮。\n中秋节 — 吃月饼、赏花灯、月圆人团圆。\n端午节 — 赛龙舟、吃粽子，纪念诗人屈原。' }, employees: 8000, events: 100 },
+    { id: 'india', name: { en: 'India', zh: '印度' }, flag: '🇮🇳', region: { en: 'South Asia', zh: '南亚' }, desc: { en: 'A vibrant center for engineering excellence and innovation. Our India team brings energy and technical depth through badminton tournaments, team outings, and cultural celebrations that strengthen our bonds.', zh: '充满活力的工程卓越与创新中心。我们的印度团队通过羽毛球联赛、团队郊游和文化庆祝活动凝聚力量，展现技术深度。' }, customs: { en: 'Diwali (Festival of Lights) — the most important Hindu festival with lamps, fireworks, and sweets.\nHoli (Festival of Colors) — a joyful celebration welcoming spring with colored powders.\nRepublic Day (Jan 26) — parades and patriotic celebrations across the nation.', zh: '排灯节 — 最重要的印度教节日，点灯、烟花和甜点。\n胡里节（色彩节） — 用彩色粉末迎接春天的欢乐庆典。\n共和国日（1月26日） — 全国游行和爱国庆祝活动。' }, employees: 25, events: 18 },
+    { id: 'singapore', name: { en: 'Singapore', zh: '新加坡' }, flag: '🇸🇬', region: { en: 'ASEAN', zh: '东南亚' }, desc: { en: 'Driving smart city innovations from the Lion City. Our Singapore hub blends cutting-edge technology with a warm, inclusive culture featuring birthday celebrations, festive gatherings, and team traditions.', zh: '从狮城推动智慧城市创新。我们的新加坡中心将尖端技术与温暖包容的文化相融合，举办生日庆祝、节日聚会和团队传统活动。' }, customs: { en: 'Chinese New Year — vibrant celebrations in Chinatown with lion dances.\nDeepavali — Little India lights up for the Festival of Lights.\nNational Day (Aug 9) — spectacular parade and fireworks.', zh: '春节 — 牛车水热闹的舞狮庆祝。\n屠妖节 — 小印度点亮排灯节灯火。\n国庆日（8月9日） — 壮观的游行和烟花。' }, employees: 39, events: 12 },
+    { id: 'malaysia', name: { en: 'Malaysia', zh: '马来西亚' }, flag: '🇲🇾', region: { en: 'ASEAN', zh: '东南亚' }, desc: { en: 'A multi-cultural tech hub where diverse traditions thrive. Our Malaysian team — our largest ASEAN office — celebrates the rich tapestry of Malay, Chinese, and Indian cultures through festivals, food, and team building.', zh: '多元文化科技中心，多元传统蓬勃发展。作为我们在东盟最大的办公室，马来西亚团队通过节日、美食和团建庆祝马来、中华和印度文化的丰富交融。' }, customs: { en: 'Hari Raya Aidilfitri — open houses, traditional Malay food, and forgiveness.\nChinese New Year — lion dances, ang pao, and reunion dinners.\nDeepavali — kolam art and festive lights across the nation.', zh: '开斋节 — 开放日、传统马来美食和相互宽恕。\n春节 — 舞狮、红包和团年饭。\n屠妖节 — 彩米画和全国节日的灯火。' }, employees: 85, events: 12 },
+    { id: 'thailand', name: { en: 'Thailand', zh: '泰国' }, flag: '🇹🇭', region: { en: 'ASEAN', zh: '东南亚' }, desc: { en: 'Blending the Land of Smiles with digital innovation. Our Thailand office infuses the warmth of Thai hospitality into everything we do — from Songkran water celebrations to festive Christmas gatherings.', zh: '微笑之国与数字创新相融合。我们的泰国办公室将泰式热情融入每项工作——从泼水节狂欢到圣诞庆祝聚会。' }, customs: { en: 'Songkran (Thai New Year, Apr 13-15) — nationwide water festival celebrating renewal.\nLoy Krathong (Nov) — floating lantern baskets on rivers under the full moon.\nKing\'s Birthday (Jul 28) — national celebration with royal ceremonies.', zh: '宋干节/泼水节（4月13-15日） — 全国泼水庆祝新年。\n水灯节（11月） — 满月下在河流放水灯。\n国王诞辰（7月28日） — 皇家仪式的国庆日。' }, employees: 8, events: 12 },
+    { id: 'myanmar', name: { en: 'Myanmar', zh: '缅甸' }, flag: '🇲🇲', region: { en: 'ASEAN', zh: '东南亚' }, desc: { en: 'Building digital bridges in the Golden Land. Our Myanmar team connects communities through technology while honoring rich traditions and the warmth of Burmese hospitality.', zh: '在黄金之地建设数字桥梁。我们的缅甸团队通过技术连接社区，同时传承丰富的传统与缅甸的热情好客。' }, customs: { en: 'Thingyan (Water Festival, Apr) — Myanmar\'s biggest celebration welcoming the New Year with water splashing.\nThadingyut (Festival of Lights, Oct) — illuminating homes and pagodas to mark Buddha\'s descent.\nTazaungdaing (Nov) — hot air balloon festivals and robe-weaving competitions.', zh: '泼水节（4月） — 缅甸最盛大的新年泼水庆祝。\n点灯节（10月） — 点亮家家户户和佛塔纪念佛陀归来。\n直桑岱点灯节（11月） — 热气球节和织袈裟比赛。' }, employees: 35, events: 8 },
+    { id: 'indonesia', name: { en: 'Indonesia', zh: '印度尼西亚' }, flag: '🇮🇩', region: { en: 'ASEAN', zh: '东南亚' }, desc: { en: 'Scaling digital solutions across the world\'s largest archipelago. Our Indonesia team bridges 17,000+ islands with technology, celebrating diversity through Christmas, Spring Festival, and local traditions.', zh: '在世界最大的群岛上推广数字解决方案。我们的印尼团队用技术连接17,000多个岛屿，通过圣诞、春节和当地传统庆祝多元文化。' }, customs: { en: 'Idul Fitri (Lebaran) — the most important holiday marking Ramadan\'s end with family reunions and mudik (homecoming).\nIndependence Day (Aug 17) — flag ceremonies and traditional games like panjat pinang.\nNyepi (Balinese New Year) — a day of complete silence and reflection.', zh: '开斋节（Lebaran） — 最重要的节日，庆祝斋月结束，家人团聚和mudik（返乡）。\n独立日（8月17日） — 升旗仪式和传统游戏如攀椰树比赛。\n安宁日（巴厘新年） — 完全静默与反思的一天。' }, employees: 24, events: 14 },
+    { id: 'philippines', name: { en: 'Philippines', zh: '菲律宾' }, flag: '🇵🇭', region: { en: 'ASEAN', zh: '东南亚' }, desc: { en: 'Empowering a digital-first economy with Filipino spirit. Our Philippines team brings the bayanihan spirit of community and joy to every project and celebration.', zh: '以菲律宾精神赋能数字优先经济。我们的菲律宾团队将社区的互助精神（Bayanihan）和欢乐带到每个项目和庆祝活动中。' }, customs: { en: 'Christmas season — the world\'s longest, starting in September with parols (star lanterns), Simbang Gabi (dawn masses), and Noche Buena feasts.\nSinulog Festival (Jan) — vibrant street dancing honoring Santo Niño in Cebu.\nAraw ng Kalayaan (Independence Day, Jun 12) — flag-raising and national pride.', zh: '圣诞季 — 全球最长的圣诞庆祝，从9月开始，有星星灯笼（parols）、黎明弥撒（Simbang Gabi）和Noche Buena盛宴。\n仙奴诺节（1月） — 宿务热闹的街头舞蹈纪念圣婴。\n独立日（6月12日） — 升旗仪式与民族自豪。' }, employees: 13, events: 10 },
+    { id: 'netherlands', name: { en: 'Netherlands', zh: '荷兰' }, flag: '🇳🇱', region: { en: 'Europe', zh: '欧洲' }, desc: { en: 'Our European gateway for digital excellence. The Netherlands team combines Dutch pragmatism with Whale Cloud innovation, fostering a collaborative culture through sports, celebrations, and team activities.', zh: '我们的欧洲数字卓越门户。荷兰团队将荷兰务实精神与浩鲸创新相结合，通过体育、庆祝和团队活动培养协作文化。' }, customs: { en: 'King\'s Day (Apr 27) — nationwide orange-clad street parties, flea markets, and boat parades.\nSinterklaas (Dec 5) — gift-giving tradition with pepernoten cookies and poems.\nLiberation Day (May 5) — celebrating freedom with festivals nationwide.', zh: '国王节（4月27日） — 全国橙色街头派对、跳蚤市场和运河游行。\n圣尼古拉斯节（12月5日） — 赠送礼物、小饼干和诗歌的传统。\n解放日（5月5日） — 全国节日庆祝自由。' }, employees: 42, events: 12 },
+    { id: 'chile', name: { en: 'Chile', zh: '智利' }, flag: '🇨🇱', region: { en: 'South America', zh: '南美' }, desc: { en: 'Our Southern anchor connecting Latin America. The Chile team brings South American warmth and passion to digital transformation, celebrating local heritage through Fiestas Patrias and team gatherings.', zh: '我们在南美连接拉丁美洲的据点。智利团队将南美的热情与数字化转型相结合，通过国庆庆典和团队聚会庆祝当地文化遗产。' }, customs: { en: 'Fiestas Patrias (Sep 18-19) — Chile\'s biggest celebration with cueca dancing, empanadas, asados (BBQ), and fondas.\nNew Year\'s — spectacular fireworks over Valparaíso bay.\nLa Tirana Festival (Jul) — vibrant religious dance festival in the Atacama Desert.', zh: '国庆节（9月18-19日） — 智利最盛大的庆祝活动，有cueca舞蹈、empanadas馅饼、烤肉和游园会。\n新年 — 瓦尔帕莱索湾壮观的烟花。\n蒂拉纳节（7月） — 阿塔卡马沙漠热闹的宗教舞蹈节。' }, employees: 9, events: 10 },
+    { id: 'hungary', name: { en: 'Hungary', zh: '匈牙利' }, flag: '🇭🇺', region: { en: 'Europe', zh: '欧洲' }, desc: { en: 'Central European hub for technical excellence. Our Hungary office bridges East and West, fostering innovation through collaborative team building and cultural exchange.', zh: '中欧技术卓越中心。我们的匈牙利办公室连接东西方，通过协作团建和文化交流促进创新。' }, customs: { en: 'St. Stephen\'s Day (Aug 20) — Hungary\'s national day with fireworks over the Danube, parades, and bread blessing.\nBusójárás (Feb) — UNESCO-listed carnival in Mohács with masked parades to chase away winter.\nChristmas — two days of celebration with family gatherings, fish soup, and bejgli pastries.', zh: '圣伊什特万日（8月20日） — 匈牙利国庆日，多瑙河上烟花、游行和面包祝福。\nBusójárás面具狂欢节（2月） — 联合国教科文组织非遗，莫哈奇的面具游行驱赶冬天。\n圣诞节 — 两天庆祝，家庭聚会、鱼汤和bejgli糕点。' }, employees: 15, events: 6 },
+    { id: 'saudi', name: { en: 'Saudi Arabia', zh: '沙特阿拉伯' }, flag: '🇸🇦', region: { en: 'Middle East', zh: '中东' }, desc: { en: 'Expanding digital transformation with Vision 2030. Our Saudi team is at the forefront of the Kingdom\'s tech revolution, blending innovation with deep respect for local traditions and hospitality.', zh: '以2030愿景推动数字化转型。我们的沙特团队站在王国科技革命的前沿，将创新与对当地传统和热情好客的尊重融为一体。' }, customs: { en: 'Eid al-Fitr — three days of feasts, gifts, and family gatherings marking Ramadan\'s end.\nEid al-Adha — the greater feast honoring sacrifice with charitable giving.\nSaudi National Day (Sep 23) — celebrating the Kingdom\'s unification with fireworks, concerts, and green flags.', zh: '开斋节 — 三天盛宴、礼物和家庭聚会庆祝斋月结束。\n宰牲节 — 更大的节日，以慈善奉献纪念牺牲。\n沙特国庆日（9月23日） — 烟花、音乐会和绿旗庆祝王国统一。' }, employees: 13, events: 8 },
+    { id: 'colombia', name: { en: 'Colombia', zh: '哥伦比亚' }, flag: '🇨🇴', region: { en: 'South America', zh: '南美' }, desc: { en: 'Bringing Latin American energy to Whale Cloud. Our Colombia team embodies the warmth, rhythm, and resilience of this vibrant nation, driving digital innovation across the region.', zh: '将拉丁美洲的活力注入浩鲸科技。我们的哥伦比亚团队体现了这个充满活力国家的热情、节奏与韧性，推动整个地区的数字创新。' }, customs: { en: 'Carnaval de Barranquilla (Feb/Mar) — UNESCO-recognized, the world\'s second-largest carnival with parades, cumbia dancing, and flower battles.\nFeria de las Flores (Aug) — Medellín\'s stunning flower festival featuring the iconic silleteros parade of massive flower arrangements.\nIndependence Day (Jul 20) — nationwide parades, flag ceremonies, and Colombian pride celebrations.', zh: '巴兰基亚狂欢节（2/3月） — 联合国教科文组织非遗，世界第二大狂欢节，有游行、cumbia舞蹈和花战。\n麦德林花会节（8月） — 麦德林令人惊叹的花卉节，标志性的花农（silleteros）巨型花盘游行。\n独立日（7月20日） — 全国游行、升旗仪式和哥伦比亚自豪感庆祝。' }, employees: 9, events: 8 },
+    { id: 'mexico', name: { en: 'Mexico', zh: '墨西哥' }, flag: '🇲🇽', region: { en: 'North America', zh: '北美' }, desc: { en: 'Connecting North America with Mexican passion. Our Mexico team brings creativity, energy, and the warmth of Mexican culture to digital transformation across the region.', zh: '以墨西哥的热情连接北美。我们的墨西哥团队将创造力、活力和墨西哥文化的温暖注入整个地区的数字化转型。' }, customs: { en: 'Día de los Muertos (Nov 1-2) — UNESCO heritage, honoring ancestors with vibrant altars, marigolds, and sugar skulls.\nIndependence Day (Sep 16) — "El Grito" ceremony, fireworks, and patriotic celebrations nationwide.\nCinco de Mayo (May 5) — commemorating the Battle of Puebla with parades, music, and traditional dances.', zh: '亡灵节（11月1-2日） — 联合国教科文组织非遗，用鲜艳的祭坛、万寿菊和糖骷髅纪念祖先。\n独立日（9月16日） — "El Grito"呐喊仪式、烟花和全国爱国庆祝。\n五月五日节（5月5日） — 纪念普埃布拉战役，有游行、音乐和传统舞蹈。' }, employees: 8, events: 6 },
+    { id: 'luxembourg', name: { en: 'Luxembourg', zh: '卢森堡' }, flag: '🇱🇺', region: { en: 'Europe', zh: '欧洲' }, desc: { en: 'Our strategic hub in the heart of Europe. The Luxembourg team combines multilingual talent with a cosmopolitan outlook, driving innovation from one of the world\'s most connected financial centers.', zh: '我们在欧洲心脏地带的战略据点。卢森堡团队融合多语言人才与国际化视野，从全球最互联的金融中心之一推动创新。' }, customs: { en: 'National Day (Jun 23) — grand fireworks, torchlight processions, and celebrations across the Grand Duchy.\nSchueberfouer (Aug-Sep) — historic funfair founded in 1340 with rides, food stalls, and festive cheer.\nEchternach Dancing Procession (Whit Tuesday) — UNESCO-listed religious festival with thousands hopping in synchronized rows.', zh: '国庆日（6月23日） — 盛大烟花、火炬游行和大公国全国庆祝。\nSchueberfouer游乐节（8-9月） — 始于1340年的历史性游乐场，有游乐设施、美食摊位和节日欢乐。\n埃希特纳赫舞蹈游行（圣灵降临节周二） — 联合国教科文组织非遗，数千人同步跳跃成行的宗教节。' }, employees: 23, events: 8 }
+];
+
+const eventData = {
+    'whale-tour': {
+        title: { en: 'Whale-onderful Tour', zh: '鲸彩之旅' },
+        cover: 'public/images/events/whale-tour/2026_005_2020鲸彩之旅.jpg',
+        images: []
+    },
+    '822-day': {
+        title: { en: '822 iWhale Day', zh: '822浩鲸日' },
+        cover: 'public/images/events/822-day/822_015_印度2 (2).jpg',
+        images: []
+    },
+    'thanksgiving': {
+        title: { en: 'Thanksgiving Day', zh: '感恩节' },
+        cover: 'public/images/events/thanksgiving/04_刚果布感恩节3.png',
+        images: []
+    }
+};
+
+const carouselSlides = [
+    { image: 'public/images/events/Cultural Festival 2026.jpg', title: { en: 'Cultural Festival 2026', zh: '2026文化节' }, subtitle: { en: 'Celebrating diversity across all offices', zh: '庆祝全球各地办公室的多样性' } },
+    { image: 'public/images/events/Team Building.jpg', title: { en: 'Team Building', zh: '团队建设' }, subtitle: { en: 'Stronger bonds, better results', zh: '更紧密的联结，更出色的成果' } },
+    { image: 'public/images/events/Global Summit.jpg', title: { en: 'Global Summit', zh: '全球峰会' }, subtitle: { en: 'MWC 2026', zh: 'MWC 2026' } }
+];
+
+function loadImageData() {
+    var data = {"saudi": ["public/images/countries/saudi/沙特 (5).jpg", "public/images/countries/saudi/沙特 (8).jpg", "public/images/countries/saudi/沙特 (9).jpg"], "netherlands": ["public/images/countries/netherlands_06.jpg", "public/images/countries/netherlands_07.jpg", "public/images/countries/netherlands_10.jpg", "public/images/countries/netherlands_11.jpg", "public/images/countries/netherlands_18.jpg", "public/images/countries/netherlands_19.jpg", "public/images/countries/netherlands_22.jpg", "public/images/countries/netherlands_24.jpg", "public/images/countries/netherlands_25.jpg"], "malaysia": ["public/images/countries/malaysia_01.jpg", "public/images/countries/malaysia_06.jpg", "public/images/countries/malaysia_07.jpg", "public/images/countries/malaysia_08.jpg", "public/images/countries/malaysia_09.jpg"], "indonesia": ["public/images/countries/indonesia_03.jpg", "public/images/countries/indonesia_08.jpg", "public/images/countries/indonesia_09.jpg", "public/images/countries/indonesia_10.jpg", "public/images/countries/indonesia_11.jpg", "public/images/countries/indonesia_12.jpg", "public/images/countries/indonesia_16.jpg"], "myanmar": ["public/images/countries/myanmar_02.jpg", "public/images/countries/myanmar_03.jpg", "public/images/countries/myanmar_06.jpg", "public/images/countries/myanmar_09.jpg", "public/images/countries/myanmar_13.jpg"], "china": ["public/images/countries/china/1.jpg", "public/images/countries/china/2.png", "public/images/countries/china/3.jpg", "public/images/countries/china/4.png", "public/images/countries/china/5.png", "public/images/countries/china/6.png", "public/images/countries/china/7.jpg", "public/images/countries/china/8.png", "public/images/countries/china_0.jpg"], "hungary": ["public/images/countries/hungary_00.jpg"], "singapore": ["public/images/countries/singapore_01.jpg", "public/images/countries/singapore_02.jpg", "public/images/countries/singapore_03.jpg", "public/images/countries/singapore_04.jpg", "public/images/countries/singapore_06.jpg", "public/images/countries/singapore_13.jpg", "public/images/countries/singapore_14.jpg", "public/images/countries/singapore_15.jpg", "public/images/countries/singapore_18.jpg", "public/images/countries/singapore_30.jpg", "public/images/countries/singapore_31.jpg"], "india": ["public/images/countries/india_01.jpg", "public/images/countries/india_10.jpg", "public/images/countries/india_11.jpg", "public/images/countries/india_12.jpg", "public/images/countries/india_13.jpg", "public/images/countries/india_14.jpg", "public/images/countries/india_16.jpg", "public/images/countries/india_22.jpg", "public/images/countries/india_28.jpg", "public/images/countries/india_31.jpg", "public/images/countries/india_37.jpg", "public/images/countries/india_42.jpg", "public/images/countries/india_46.jpg", "public/images/countries/india_47.jpg", "public/images/countries/india_48.jpg", "public/images/countries/india_51.jpg", "public/images/countries/india_52.jpg", "public/images/countries/india_54.jpg", "public/images/countries/india_55.jpg", "public/images/countries/india_57.jpg", "public/images/countries/india_59.jpg", "public/images/countries/india_60.jpg", "public/images/countries/india_61.jpg", "public/images/countries/india_62.jpg", "public/images/countries/india_63.jpg", "public/images/countries/india_64.jpg", "public/images/countries/india_65.jpg", "public/images/countries/india_66.jpg", "public/images/countries/india_69.jpg", "public/images/countries/india_70.jpg", "public/images/countries/india_71.jpg", "public/images/countries/india_72.jpg", "public/images/countries/india_73.jpg", "public/images/countries/india_74.jpg", "public/images/countries/india_76.jpg", "public/images/countries/india_77.jpg", "public/images/countries/india_78.jpg", "public/images/countries/india_83.jpg", "public/images/countries/india_84.jpg", "public/images/countries/india_85.jpg"], "philippines": ["public/images/countries/philippines_01.jpg", "public/images/countries/philippines_03.jpg"], "thailand": ["public/images/countries/thailand_00.jpg", "public/images/countries/thailand_01.jpg", "public/images/countries/thailand_05.jpg", "public/images/countries/thailand_08.jpg", "public/images/countries/thailand_09.jpg", "public/images/countries/thailand_10.jpg", "public/images/countries/thailand_12.jpg"], "chile": ["public/images/countries/chile-09.JPG", "public/images/countries/chile_00.jpg", "public/images/countries/chile_05.jpg", "public/images/countries/chile_06.jpg", "public/images/countries/chile_07.jpg"], "colombia": ["public/images/countries/Colombia-01.jpg", "public/images/countries/Colombia-02.JPG.png"], "mexico": [], "luxembourg": ["public/images/countries/Luxembourg-01.png"], "event_whale_wonderful_tour_2025": ["public/images/events/whale_wonderful_tour_2025/boss face2face.jpg", "public/images/events/whale_wonderful_tour_2025/boss.jpg", "public/images/events/whale_wonderful_tour_2025/party.jpg", "public/images/events/whale_wonderful_tour_2025/业务会谈1.jpg", "public/images/events/whale_wonderful_tour_2025/业务会谈2.jpg", "public/images/events/whale_wonderful_tour_2025/公司展馆1.png", "public/images/events/whale_wonderful_tour_2025/公司展馆2.png", "public/images/events/whale_wonderful_tour_2025/公司展馆3.png", "public/images/events/whale_wonderful_tour_2025/六朝博物馆4.jpg", "public/images/events/whale_wonderful_tour_2025/制香.jpg", "public/images/events/whale_wonderful_tour_2025/制香2.png", "public/images/events/whale_wonderful_tour_2025/制香3.png", "public/images/events/whale_wonderful_tour_2025/制香4.png", "public/images/events/whale_wonderful_tour_2025/南京大牌档.jpg", "public/images/events/whale_wonderful_tour_2025/国际年会.jpg", "public/images/events/whale_wonderful_tour_2025/圆桌讨论1.jpg", "public/images/events/whale_wonderful_tour_2025/圆桌讨论2.jpg", "public/images/events/whale_wonderful_tour_2025/小组合照1.jpg", "public/images/events/whale_wonderful_tour_2025/小组合照2.jpg", "public/images/events/whale_wonderful_tour_2025/小组合照3.jpg", "public/images/events/whale_wonderful_tour_2025/小组合照4.jpg", "public/images/events/whale_wonderful_tour_2025/小组合照5.jpg", "public/images/events/whale_wonderful_tour_2025/海底捞.jpg", "public/images/events/whale_wonderful_tour_2025/游戏2.jpg", "public/images/events/whale_wonderful_tour_2025/牛首山.jpg", "public/images/events/whale_wonderful_tour_2025/牛首山2.jpg", "public/images/events/whale_wonderful_tour_2025/牛首山3.jpg", "public/images/events/whale_wonderful_tour_2025/牛首山4.jpg", "public/images/events/whale_wonderful_tour_2025/瞻园2.png", "public/images/events/whale_wonderful_tour_2025/破冰.jpg", "public/images/events/whale_wonderful_tour_2025/破冰2.jpg", "public/images/events/whale_wonderful_tour_2025/秦淮游船.jpg", "public/images/events/whale_wonderful_tour_2025/素食餐厅.jpg", "public/images/events/whale_wonderful_tour_2025/鲍总数字人.jpg", "public/images/events/whale_wonderful_tour_2025/鲸彩之旅888.jpg"], "event_822-day": ["public/images/events/822-day/822_000_新加坡 (10).jpg", "public/images/events/822-day/822_001_马来 (2).jpg", "public/images/events/822-day/822_002_缅甸 (7).jpg", "public/images/events/822-day/822_003_荷兰 (7).jpg", "public/images/events/822-day/822_004_沙特 (6).jpg", "public/images/events/822-day/822_005_新加坡 (16).jpg", "public/images/events/822-day/822_006_缅甸 (1).jpg", "public/images/events/822-day/822_007_印度 (13).jpg", "public/images/events/822-day/822_008_印度2 (1).jpg", "public/images/events/822-day/822_009_缅甸（11）.png", "public/images/events/822-day/822_010_印尼 (1).png", "public/images/events/822-day/822_011_印度 (12).jpg", "public/images/events/822-day/822_012_印度 (3).jpg", "public/images/events/822-day/822_013_泰国 (6).jpg", "public/images/events/822-day/822_014_荷兰 (2).jpg", "public/images/events/822-day/822_015_印度2 (2).jpg", "public/images/events/822-day/822_016_印尼 (2).png", "public/images/events/822-day/822_017_印度2 (3).jpg", "public/images/events/822-day/822_018_新加坡 (9).jpg", "public/images/events/822-day/822_019_泰国 (7).jpg", "public/images/events/822-day/822_020_沙特 (5).jpg", "public/images/events/822-day/822_021_沙特 (9).jpg", "public/images/events/822-day/822_022_荷兰 (4).jpg", "public/images/events/822-day/822_023_缅甸 (5).jpg", "public/images/events/822-day/822_024_马来 (1).jpg", "public/images/events/822-day/822_025_沙特 (8).jpg", "public/images/events/822-day/822_026_泰国 (1).jpg", "public/images/events/822-day/印尼 (1).png", "public/images/events/822-day/印尼 (2).png", "public/images/events/822-day/印度 (12).jpg", "public/images/events/822-day/印度 (13).jpg", "public/images/events/822-day/印度 (3).jpg", "public/images/events/822-day/印度2 (1).jpg", "public/images/events/822-day/印度2 (2).jpg", "public/images/events/822-day/印度2 (3).jpg", "public/images/events/822-day/新加坡 (10).jpg", "public/images/events/822-day/新加坡 (16).jpg", "public/images/events/822-day/新加坡 (9).jpg", "public/images/events/822-day/沙特 (5).jpg", "public/images/events/822-day/沙特 (6).jpg", "public/images/events/822-day/沙特 (8).jpg", "public/images/events/822-day/沙特 (9).jpg", "public/images/events/822-day/泰国 (1).jpg", "public/images/events/822-day/泰国 (6).jpg", "public/images/events/822-day/泰国 (7).jpg", "public/images/events/822-day/缅甸 (1).jpg", "public/images/events/822-day/缅甸 (5).jpg", "public/images/events/822-day/缅甸 (7).jpg", "public/images/events/822-day/缅甸（11）.png", "public/images/events/822-day/荷兰 (2).jpg", "public/images/events/822-day/荷兰 (4).jpg", "public/images/events/822-day/荷兰 (7).jpg", "public/images/events/822-day/马来 (1).jpg", "public/images/events/822-day/马来 (2).jpg"], "event_2025-whale-tour": ["public/images/events/2025-whale-tour/00_小组合照4.jpg", "public/images/events/2025-whale-tour/01_鲸彩之旅888.jpg", "public/images/events/2025-whale-tour/02_小组合照5.jpg", "public/images/events/2025-whale-tour/03_小组合照2.jpg", "public/images/events/2025-whale-tour/04_小组合照3.jpg", "public/images/events/2025-whale-tour/05_圆桌讨论1.jpg", "public/images/events/2025-whale-tour/06_小组合照1.jpg", "public/images/events/2025-whale-tour/07_制香.jpg", "public/images/events/2025-whale-tour/08_鲍总数字人.jpg", "public/images/events/2025-whale-tour/09_牛首山.jpg", "public/images/events/2025-whale-tour/10_圆桌讨论2.jpg", "public/images/events/2025-whale-tour/11_制香2.png", "public/images/events/2025-whale-tour/12_boss.jpg", "public/images/events/2025-whale-tour/13_牛首山4.jpg", "public/images/events/2025-whale-tour/14_制香3.png", "public/images/events/2025-whale-tour/15_六朝博物馆4.jpg", "public/images/events/2025-whale-tour/16_party.jpg", "public/images/events/2025-whale-tour/17_牛首山3.jpg", "public/images/events/2025-whale-tour/18_制香4.png", "public/images/events/2025-whale-tour/19_公司展馆1.png", "public/images/events/2025-whale-tour/20_牛首山2.jpg", "public/images/events/2025-whale-tour/21_公司展馆2.png", "public/images/events/2025-whale-tour/22_秦淮游船.jpg", "public/images/events/2025-whale-tour/23_公司展馆3.png", "public/images/events/2025-whale-tour/24_业务会谈2.jpg", "public/images/events/2025-whale-tour/25_业务会谈1.jpg", "public/images/events/2025-whale-tour/26_南京大牌档.jpg", "public/images/events/2025-whale-tour/27_素食餐厅.jpg", "public/images/events/2025-whale-tour/28_游戏2.jpg", "public/images/events/2025-whale-tour/29_海底捞.jpg", "public/images/events/2025-whale-tour/30_破冰2.jpg", "public/images/events/2025-whale-tour/31_破冰.jpg", "public/images/events/2025-whale-tour/32_瞻园2.png", "public/images/events/2025-whale-tour/33_国际年会.jpg", "public/images/events/2025-whale-tour/34_boss face2face.jpg"], "event_whale_wonderful_tour_2026": ["public/images/events/whale_wonderful_tour_2026/00_ZYX_2908.jpg", "public/images/events/whale_wonderful_tour_2026/01_ZYX_1958.jpg", "public/images/events/whale_wonderful_tour_2026/02_ZYX_2921.jpg", "public/images/events/whale_wonderful_tour_2026/03_ZYX_1435.jpg", "public/images/events/whale_wonderful_tour_2026/04_小店参观.jpg", "public/images/events/whale_wonderful_tour_2026/05_ZYX_3383.jpg", "public/images/events/whale_wonderful_tour_2026/06_ZYX_2738.jpg", "public/images/events/whale_wonderful_tour_2026/07_分组讨论.jpg", "public/images/events/whale_wonderful_tour_2026/08_ZYX_1556.jpg", "public/images/events/whale_wonderful_tour_2026/09_大楼参观.jpg", "public/images/events/whale_wonderful_tour_2026/10_ZYX_2310.jpg", "public/images/events/whale_wonderful_tour_2026/11_ZYX_1586.jpg", "public/images/events/whale_wonderful_tour_2026/12_ZYX_2058.jpg", "public/images/events/whale_wonderful_tour_2026/13_ZYX_2924.jpg", "public/images/events/whale_wonderful_tour_2026/14_ZYX_1829.jpg", "public/images/events/whale_wonderful_tour_2026/15_ZYX_1457.jpg", "public/images/events/whale_wonderful_tour_2026/16_ZYX_2016.jpg", "public/images/events/whale_wonderful_tour_2026/17_ZYX_1495.jpg", "public/images/events/whale_wonderful_tour_2026/18_开营礼赠.jpg", "public/images/events/whale_wonderful_tour_2026/19_ZYX_3451.jpg", "public/images/events/whale_wonderful_tour_2026/20_ZYX_3337.jpg", "public/images/events/whale_wonderful_tour_2026/21_ZYX_2955.jpg", "public/images/events/whale_wonderful_tour_2026/22_ZYX_2941.jpg", "public/images/events/whale_wonderful_tour_2026/23_ZYX_1530.jpg", "public/images/events/whale_wonderful_tour_2026/24_ZYX_2401.jpg", "public/images/events/whale_wonderful_tour_2026/25_ZYX_1687.jpg", "public/images/events/whale_wonderful_tour_2026/26_ZYX_1484.jpg", "public/images/events/whale_wonderful_tour_2026/27_ZYX_1933.jpg", "public/images/events/whale_wonderful_tour_2026/28_ZYX_2209.jpg", "public/images/events/whale_wonderful_tour_2026/29_ZYX_2624.jpg", "public/images/events/whale_wonderful_tour_2026/30_ZYX_3704.jpg", "public/images/events/whale_wonderful_tour_2026/31_ZYX_2354.jpg", "public/images/events/whale_wonderful_tour_2026/32_ZYX_2340.jpg", "public/images/events/whale_wonderful_tour_2026/33_ZYX_2196.jpg", "public/images/events/whale_wonderful_tour_2026/34_ZYX_1909.jpg", "public/images/events/whale_wonderful_tour_2026/35_ZYX_2030.jpg", "public/images/events/whale_wonderful_tour_2026/36_开营打卡合照.jpg", "public/images/events/whale_wonderful_tour_2026/37_ZYX_2350.jpg", "public/images/events/whale_wonderful_tour_2026/38_ZYX_1507.jpg", "public/images/events/whale_wonderful_tour_2026/39_ZYX_3161.jpg", "public/images/events/whale_wonderful_tour_2026/40_ZYX_1762.jpg", "public/images/events/whale_wonderful_tour_2026/41_ZYX_2490.jpg", "public/images/events/whale_wonderful_tour_2026/42_ZYX_2889.jpg", "public/images/events/whale_wonderful_tour_2026/43_ZYX_3188.jpg", "public/images/events/whale_wonderful_tour_2026/44_ZYX_2718.jpg", "public/images/events/whale_wonderful_tour_2026/45_ZYX_3566.jpg", "public/images/events/whale_wonderful_tour_2026/46_ZYX_2286.jpg", "public/images/events/whale_wonderful_tour_2026/47_ZYX_2133.jpg", "public/images/events/whale_wonderful_tour_2026/48_ZYX_3366.jpg", "public/images/events/whale_wonderful_tour_2026/49_ZYX_2656.jpg"], "event_whale-tour": ["public/images/events/whale-tour/14BBA72E-9E7D-44DC-9799-F513FC628EA8-31700-00001192AAF832C3.jpg", "public/images/events/whale-tour/2017.jpg", "public/images/events/whale-tour/2017鲸彩之旅.jpg", "public/images/events/whale-tour/2018-2 鲸彩之旅.png", "public/images/events/whale-tour/2018-鲸彩之旅.png", "public/images/events/whale-tour/2019-鲸彩之旅.png", "public/images/events/whale-tour/2019.png", "public/images/events/whale-tour/2020.jpg", "public/images/events/whale-tour/2020鲸彩之旅.png", "public/images/events/whale-tour/20240202_171851.jpg", "public/images/events/whale-tour/2026_000_2017-1.jpg", "public/images/events/whale-tour/2026_001_2017.jpg", "public/images/events/whale-tour/2026_002_2017鲸彩之旅.jpg", "public/images/events/whale-tour/2026_003_2018-2 鲸彩之旅.jpg", "public/images/events/whale-tour/2026_004_2018-鲸彩之旅.jpg", "public/images/events/whale-tour/2026_005_2020鲸彩之旅.jpg", "public/images/events/whale-tour/2026_006_2020.jpg", "public/images/events/whale-tour/2026_007_2020-4.jpg", "public/images/events/whale-tour/2026_008_2020-1.jpg", "public/images/events/whale-tour/2026_009_2020-2.jpg", "public/images/events/whale-tour/2026_010_2020-3.jpg", "public/images/events/whale-tour/2026_011_IMG_1257.jpg", "public/images/events/whale-tour/2026_012_20240202_171851.jpg", "public/images/events/whale-tour/2026_013_IMG_7147.HEIC.JPG.jpg", "public/images/events/whale-tour/2026_014_IMG_2584.JPG.jpg", "public/images/events/whale-tour/2026_015_IMG_3386.jpg", "public/images/events/whale-tour/2026_016_IMG_1340.jpg", "public/images/events/whale-tour/2026_017_14BBA72E-9E7D-44DC-9799-F513FC628EA8-31700-00001192AAF832C3.jpg", "public/images/events/whale-tour/2026_018_IMG_1340 - 副本.jpg", "public/images/events/whale-tour/2026_019_IMG_3395.jpg", "public/images/events/whale-tour/2026_020_IMG_3424.jpg", "public/images/events/whale-tour/2026_021_IMG_3380.jpg", "public/images/events/whale-tour/2026_022_DINGTALK_IM_1567356732.JPG - 副本.jpg", "public/images/events/whale-tour/2026_023_IMG_1350.jpg", "public/images/events/whale-tour/2026_024_IMG_3426.jpg", "public/images/events/whale-tour/2026_025_IMG_1345.jpg", "public/images/events/whale-tour/2026_026_DINGTALK_IM_1567356732.JPG.jpg", "public/images/events/whale-tour/2026_027_IMG_7157.HEIC.JPG.jpg", "public/images/events/whale-tour/2026_028_IMG_1271.jpg", "public/images/events/whale-tour/2026_029_IMG_3314.jpg", "public/images/events/whale-tour/2026_030_IMG_3288.jpg", "public/images/events/whale-tour/2026_031_小组合照4.jpg", "public/images/events/whale-tour/2026_032_鲸彩之旅888.jpg", "public/images/events/whale-tour/2026_033_小组合照5.jpg", "public/images/events/whale-tour/2026_034_小组合照2.jpg", "public/images/events/whale-tour/2026_035_小组合照3.jpg", "public/images/events/whale-tour/2026_036_圆桌讨论1.jpg", "public/images/events/whale-tour/2026_037_小组合照1.jpg", "public/images/events/whale-tour/2026_038_制香.jpg", "public/images/events/whale-tour/2026_039_鲍总数字人.jpg", "public/images/events/whale-tour/2026_040_牛首山.jpg", "public/images/events/whale-tour/2026_041_圆桌讨论2.jpg", "public/images/events/whale-tour/2026_042_制香2.jpg", "public/images/events/whale-tour/2026_043_boss.jpg", "public/images/events/whale-tour/2026_044_牛首山4.jpg", "public/images/events/whale-tour/2026_045_制香3.jpg", "public/images/events/whale-tour/2026_046_六朝博物馆4.jpg", "public/images/events/whale-tour/2026_047_party.jpg", "public/images/events/whale-tour/2026_048_牛首山3.jpg", "public/images/events/whale-tour/2026_049_制香4.jpg", "public/images/events/whale-tour/2026_050_公司展馆1.jpg", "public/images/events/whale-tour/2026_051_牛首山2.jpg", "public/images/events/whale-tour/2026_052_公司展馆2.jpg", "public/images/events/whale-tour/2026_053_秦淮游船.jpg", "public/images/events/whale-tour/2026_054_公司展馆3.jpg", "public/images/events/whale-tour/2026_055_业务会谈2.jpg", "public/images/events/whale-tour/2026_056_业务会谈1.jpg", "public/images/events/whale-tour/2026_057_南京大牌档.jpg", "public/images/events/whale-tour/2026_058_素食餐厅.jpg", "public/images/events/whale-tour/2026_059_游戏2.jpg", "public/images/events/whale-tour/2026_060_海底捞.jpg", "public/images/events/whale-tour/2026_061_破冰2.jpg", "public/images/events/whale-tour/2026_062_破冰.jpg", "public/images/events/whale-tour/2026_063_瞻园2.jpg", "public/images/events/whale-tour/2026_064_国际年会.jpg", "public/images/events/whale-tour/2026_065_boss face2face.jpg", "public/images/events/whale-tour/2026_066_ZYX_2908.jpg", "public/images/events/whale-tour/2026_067_ZYX_1958.jpg", "public/images/events/whale-tour/2026_068_ZYX_2921.jpg", "public/images/events/whale-tour/2026_069_ZYX_1435.jpg", "public/images/events/whale-tour/2026_070_小店参观.jpg", "public/images/events/whale-tour/2026_071_ZYX_3383.jpg", "public/images/events/whale-tour/2026_072_ZYX_2738.jpg", "public/images/events/whale-tour/2026_073_分组讨论.jpg", "public/images/events/whale-tour/2026_074_ZYX_1556.jpg", "public/images/events/whale-tour/2026_075_大楼参观.jpg", "public/images/events/whale-tour/2026_076_ZYX_2310.jpg", "public/images/events/whale-tour/2026_077_ZYX_1586.jpg", "public/images/events/whale-tour/2026_078_ZYX_2058.jpg", "public/images/events/whale-tour/2026_079_ZYX_2924.jpg", "public/images/events/whale-tour/2026_080_ZYX_1829.jpg", "public/images/events/whale-tour/2026_081_ZYX_1457.jpg", "public/images/events/whale-tour/2026_082_ZYX_2016.jpg", "public/images/events/whale-tour/2026_083_ZYX_1495.jpg", "public/images/events/whale-tour/2026_084_开营礼赠.jpg", "public/images/events/whale-tour/2026_085_ZYX_3451.jpg", "public/images/events/whale-tour/2026_086_ZYX_3337.jpg", "public/images/events/whale-tour/2026_087_ZYX_2955.jpg", "public/images/events/whale-tour/2026_088_ZYX_2941.jpg", "public/images/events/whale-tour/2026_089_ZYX_1530.jpg", "public/images/events/whale-tour/2026_090_ZYX_2401.jpg", "public/images/events/whale-tour/2026_091_ZYX_1687.jpg", "public/images/events/whale-tour/2026_092_ZYX_1484.jpg", "public/images/events/whale-tour/2026_093_ZYX_1933.jpg", "public/images/events/whale-tour/2026_094_ZYX_2209.jpg", "public/images/events/whale-tour/2026_095_ZYX_2624.jpg", "public/images/events/whale-tour/2026_096_ZYX_3704.jpg", "public/images/events/whale-tour/2026_097_ZYX_2354.jpg", "public/images/events/whale-tour/2026_098_ZYX_2340.jpg", "public/images/events/whale-tour/2026_099_ZYX_2196.jpg", "public/images/events/whale-tour/2026_100_ZYX_1909.jpg", "public/images/events/whale-tour/2026_101_ZYX_2030.jpg", "public/images/events/whale-tour/2026_102_开营打卡合照.jpg", "public/images/events/whale-tour/2026_103_ZYX_2350.jpg", "public/images/events/whale-tour/2026_104_ZYX_1507.jpg", "public/images/events/whale-tour/2026_105_ZYX_3161.jpg", "public/images/events/whale-tour/2026_106_ZYX_1762.jpg", "public/images/events/whale-tour/2026_107_ZYX_2490.jpg", "public/images/events/whale-tour/2026_108_ZYX_2889.jpg", "public/images/events/whale-tour/2026_109_ZYX_3188.jpg", "public/images/events/whale-tour/2026_110_ZYX_2718.jpg", "public/images/events/whale-tour/2026_111_ZYX_3566.jpg", "public/images/events/whale-tour/2026_112_ZYX_2286.jpg", "public/images/events/whale-tour/2026_113_ZYX_2133.jpg", "public/images/events/whale-tour/2026_114_ZYX_3366.jpg", "public/images/events/whale-tour/2026_115_ZYX_2656.jpg", "public/images/events/whale-tour/公司展馆1.png", "public/images/events/whale-tour/小店参观.jpg", "public/images/events/whale-tour/开营打卡合照.jpg", "public/images/events/whale-tour/瞻园2.png", "public/images/events/whale-tour/鲸彩之旅888.jpg"], "event_2026-whale-tour": ["public/images/events/2026-whale-tour/00_ZYX_2908.jpg", "public/images/events/2026-whale-tour/01_ZYX_1958.jpg", "public/images/events/2026-whale-tour/02_ZYX_2921.jpg", "public/images/events/2026-whale-tour/03_ZYX_1435.jpg", "public/images/events/2026-whale-tour/04_小店参观.jpg", "public/images/events/2026-whale-tour/05_ZYX_3383.jpg", "public/images/events/2026-whale-tour/06_ZYX_2738.jpg", "public/images/events/2026-whale-tour/07_分组讨论.jpg", "public/images/events/2026-whale-tour/08_ZYX_1556.jpg", "public/images/events/2026-whale-tour/09_大楼参观.jpg", "public/images/events/2026-whale-tour/10_ZYX_2310.jpg", "public/images/events/2026-whale-tour/11_ZYX_1586.jpg", "public/images/events/2026-whale-tour/12_ZYX_2058.jpg", "public/images/events/2026-whale-tour/13_ZYX_2924.jpg", "public/images/events/2026-whale-tour/14_ZYX_1829.jpg", "public/images/events/2026-whale-tour/15_ZYX_1457.jpg", "public/images/events/2026-whale-tour/16_ZYX_2016.jpg", "public/images/events/2026-whale-tour/17_ZYX_1495.jpg", "public/images/events/2026-whale-tour/18_开营礼赠.jpg", "public/images/events/2026-whale-tour/19_ZYX_3451.jpg", "public/images/events/2026-whale-tour/20_ZYX_3337.jpg", "public/images/events/2026-whale-tour/21_ZYX_2955.jpg", "public/images/events/2026-whale-tour/22_ZYX_2941.jpg", "public/images/events/2026-whale-tour/23_ZYX_1530.jpg", "public/images/events/2026-whale-tour/24_ZYX_2401.jpg", "public/images/events/2026-whale-tour/25_ZYX_1687.jpg", "public/images/events/2026-whale-tour/26_ZYX_1484.jpg", "public/images/events/2026-whale-tour/27_ZYX_1933.jpg", "public/images/events/2026-whale-tour/28_ZYX_2209.jpg", "public/images/events/2026-whale-tour/29_ZYX_2624.jpg", "public/images/events/2026-whale-tour/30_ZYX_3704.jpg", "public/images/events/2026-whale-tour/31_ZYX_2354.jpg", "public/images/events/2026-whale-tour/32_ZYX_2340.jpg", "public/images/events/2026-whale-tour/33_ZYX_2196.jpg", "public/images/events/2026-whale-tour/34_ZYX_1909.jpg", "public/images/events/2026-whale-tour/35_ZYX_2030.jpg", "public/images/events/2026-whale-tour/36_开营打卡合照.jpg", "public/images/events/2026-whale-tour/37_ZYX_2350.jpg", "public/images/events/2026-whale-tour/38_ZYX_1507.jpg", "public/images/events/2026-whale-tour/39_ZYX_3161.jpg", "public/images/events/2026-whale-tour/40_ZYX_1762.jpg", "public/images/events/2026-whale-tour/42_ZYX_2490.jpg", "public/images/events/2026-whale-tour/43_ZYX_2889.jpg", "public/images/events/2026-whale-tour/44_ZYX_3188.jpg", "public/images/events/2026-whale-tour/45_ZYX_2718.jpg", "public/images/events/2026-whale-tour/46_ZYX_3566.jpg", "public/images/events/2026-whale-tour/47_ZYX_2286.jpg", "public/images/events/2026-whale-tour/48_ZYX_2133.jpg", "public/images/events/2026-whale-tour/49_ZYX_3366.jpg", "public/images/events/2026-whale-tour/50_ZYX_2656.jpg"], "event_thanksgiving": ["public/images/events/thanksgiving/ 刚果布.png", "public/images/events/thanksgiving/00_摩洛哥1.jpg", "public/images/events/thanksgiving/01_刚果布感恩节4.png", "public/images/events/thanksgiving/02_摩洛哥3.jpg", "public/images/events/thanksgiving/03_摩洛哥2.jpg", "public/images/events/thanksgiving/04_刚果布感恩节3.png", "public/images/events/thanksgiving/05_阿富汗3.jpg", "public/images/events/thanksgiving/06_刚果布感恩节2.png", "public/images/events/thanksgiving/07_阿富汗1.jpg", "public/images/events/thanksgiving/10_刚果布感恩节1.png", "public/images/events/thanksgiving/11_孟加拉-感恩节.jpg", "public/images/events/thanksgiving/12_津巴布韦1.jpg", "public/images/events/thanksgiving/13_孟加拉感恩节3.png", "public/images/events/thanksgiving/14_孟加拉感恩节2.jpg", "public/images/events/thanksgiving/15_津巴布韦2.jpg", "public/images/events/thanksgiving/16_津巴布韦3.jpg", "public/images/events/thanksgiving/刚果布感恩节1.png", "public/images/events/thanksgiving/刚果布感恩节2.png", "public/images/events/thanksgiving/刚果布感恩节4.png", "public/images/events/thanksgiving/孟加拉-感恩节.jpg", "public/images/events/thanksgiving/孟加拉感恩节2.jpg", "public/images/events/thanksgiving/孟加拉感恩节3.png", "public/images/events/thanksgiving/摩洛哥1.jpg", "public/images/events/thanksgiving/摩洛哥2.jpg", "public/images/events/thanksgiving/摩洛哥3.jpg", "public/images/events/thanksgiving/津巴布韦1.jpg", "public/images/events/thanksgiving/津巴布韦2.jpg", "public/images/events/thanksgiving/津巴布韦3.jpg", "public/images/events/thanksgiving/阿富汗1.jpg", "public/images/events/thanksgiving/阿富汗3.jpg"], "event_thanksgiving_2025": ["public/images/events/thanksgiving_2025/刚果布感恩节1.png", "public/images/events/thanksgiving_2025/刚果布感恩节2.png", "public/images/events/thanksgiving_2025/刚果布感恩节3.png", "public/images/events/thanksgiving_2025/刚果布感恩节4.png", "public/images/events/thanksgiving_2025/孟加拉-感恩节.jpg", "public/images/events/thanksgiving_2025/孟加拉感恩节2.jpg", "public/images/events/thanksgiving_2025/孟加拉感恩节3.png", "public/images/events/thanksgiving_2025/摩洛哥1.jpg", "public/images/events/thanksgiving_2025/摩洛哥2.jpg", "public/images/events/thanksgiving_2025/摩洛哥3.jpg", "public/images/events/thanksgiving_2025/津巴布韦1.jpg", "public/images/events/thanksgiving_2025/津巴布韦2.jpg", "public/images/events/thanksgiving_2025/津巴布韦3.jpg", "public/images/events/thanksgiving_2025/阿富汗1.jpg", "public/images/events/thanksgiving_2025/阿富汗3.jpg"], "spotlight_2025": ["public/images/spotlight/2025_01.jpg", "public/images/spotlight/2025_02.jpg", "public/images/spotlight/2025_03.jpg", "public/images/spotlight/2025_04.jpg", "public/images/spotlight/2025_05.jpg", "public/images/spotlight/2025_06.jpg", "public/images/spotlight/2025_07.jpg", "public/images/spotlight/2025_08.jpg", "public/images/spotlight/2025_09.jpg", "public/images/spotlight/2025_10.jpg", "public/images/spotlight/2025_11.jpg", "public/images/spotlight/2025_12.jpg"], "spotlight_2026": ["public/images/spotlight/2026_01.png", "public/images/spotlight/2026_02.jpg", "public/images/spotlight/2026_03.png", "public/images/spotlight/2026_04.jpg", "public/images/spotlight/2026_05.jpg", "public/images/spotlight/2026-06.jpg"]};
+    return Promise.resolve().then(function() {
+            countryData.forEach(c => {
+                if (data[c.id]) c.images = data[c.id];
+                else c.images = [];
+            });
+            if (data['event_whale-tour']) eventData['whale-tour'].images = data['event_whale-tour'];
+            if (data['event_822-day']) eventData['822-day'].images = data['event_822-day'];
+            if (data['event_thanksgiving']) eventData['thanksgiving'].images = data['event_thanksgiving'];
+            if (data.spotlight_2025) window.spotlight2025Images = data.spotlight_2025;
+            if (data.spotlight_2026) window.spotlight2026Images = data.spotlight_2026;
+        });
+}
+
+</script>
+<script>
+let currentLightboxIndex = 0;
+let lightboxImages = [];
+
+function openLightbox(images, index) {
+    lightboxImages = images;
+    currentLightboxIndex = index || 0;
+    updateLightboxImage();
+    document.getElementById('lightbox').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function updateLightboxImage() {
+    const img = document.getElementById('lightbox-img');
+    const video = document.getElementById('lightbox-video');
+    const src = lightboxImages[currentLightboxIndex];
+    const caption = document.getElementById('lightbox-caption');
+
+    if (src && src.match(/\.(mp4|webm|mov)$/i)) {
+        img.classList.add('hidden');
+        video.classList.remove('hidden');
+        video.querySelector('source').src = src;
+        video.load();
+        caption.innerText = '';
+    } else {
+        img.classList.remove('hidden');
+        video.classList.add('hidden');
+        img.src = src;
+        caption.innerText = (currentLightboxIndex + 1) + ' / ' + lightboxImages.length;
+    }
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    const video = document.getElementById('lightbox-video');
+    if (video) video.pause();
+}
+
+function prevLightbox() {
+    currentLightboxIndex = (currentLightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+    updateLightboxImage();
+}
+
+function nextLightbox() {
+    currentLightboxIndex = (currentLightboxIndex + 1) % lightboxImages.length;
+    updateLightboxImage();
+}
+
+document.addEventListener('keydown', (e) => {
+    const lightbox = document.getElementById('lightbox');
+    if (!lightbox || lightbox.classList.contains('hidden')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') prevLightbox();
+    if (e.key === 'ArrowRight') nextLightbox();
+});
+
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    loadImageData().then(() => {
+        initNav();
+        initScrollProgress();
+        initScrollAnimations();
+        initParticles();
+        initStatsCounter();
+        applyTranslations();
+
+        if (document.getElementById('carousel-track')) initCarousel();
+        if (document.getElementById('country-cards')) renderCountryCards();
+        if (document.getElementById('spotlight-2025-grid')) renderSpotlight2025();
+        if (document.getElementById('spotlight-2026-grid')) renderSpotlight2026();
+    });
+
+    setTimeout(() => {
+        const loading = document.getElementById('map-loading');
+        if (loading) loading.classList.add('hidden');
+    }, 800);
+});
+
+function initNav() {
+    var hash = location.hash || '#home';
+    document.querySelectorAll('.nav-link').forEach(function(l) {
+        if (l.getAttribute('href') === hash) l.classList.add('active');
+    });
+    window.addEventListener('hashchange', function() {
+        var h = location.hash || '#home';
+        document.querySelectorAll('.nav-link').forEach(function(l) {
+            l.classList.toggle('active', l.getAttribute('href') === h);
+        });
+    });
+}
+
+function initScrollProgress() {
+    var bar = document.getElementById('scroll-progress');
+    if (!bar) return;
+    window.addEventListener('scroll', function() {
+        bar.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100) + '%';
+    });
+}
+
+function initScrollAnimations() {
+    var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(function(el) { obs.observe(el); });
+}
+
+function initParticles() {
+    var c = document.getElementById('particles-container');
+    if (!c) return;
+    for (var i = 0; i < 20; i++) {
+        var p = document.createElement('div');
+        p.className = 'particle';
+        var s = Math.random() * 10 + 5;
+        p.style.width = s + 'px';
+        p.style.height = s + 'px';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = Math.random() * 100 + 20 + '%';
+        p.style.animationDelay = Math.random() * 20 + 's';
+        p.style.animationDuration = Math.random() * 10 + 15 + 's';
+        c.appendChild(p);
+    }
+}
+
+function initStatsCounter() {
+    var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.querySelectorAll('.stat-number').forEach(function(stat) {
+                    var target = parseInt(stat.getAttribute('data-target'));
+                    var step = target / 125;
+                    var current = 0;
+                    var counter = setInterval(function() {
+                        current += step;
+                        if (current >= target) {
+                            stat.textContent = target >= 1000 ? (target / 1000).toFixed(0) + 'K+' : target + '+';
+                            clearInterval(counter);
+                        } else {
+                            stat.textContent = Math.floor(current);
+                        }
+                    }, 16);
+                });
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    var el = document.querySelector('.stats-grid');
+    if (el) obs.observe(el);
+}
+
+function renderCountryCards() {
+    var container = document.getElementById('country-cards');
+    if (!container) return;
+    container.innerHTML = countryData.map(function(c) {
+        var nm = c.name[currentLang] || c.name.en;
+        var rg = c.region[currentLang] || c.region.en;
+        return '<div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-slate-300 hover:border-blue-500 hover:shadow-lg transition-all cursor-pointer group" onclick="openCountryModal(\'' + c.id + '\')"><div class="text-2xl mb-2">' + c.flag + '</div><div class="text-slate-800 font-bold text-sm uppercase">' + nm + '</div><div class="text-slate-500 text-xs mt-1">' + rg + '</div></div>';
+    }).join('');
+}
+
+var currentCountryId = null;
+
+function openCountryModal(countryId) {
+    currentCountryId = countryId;
+    var c = countryData.find(function(x) { return x.id === countryId; });
+    if (!c) return;
+    document.getElementById('modal-title').innerText = c.flag + ' ' + (c.name[currentLang] || c.name.en);
+    document.getElementById('modal-tag').innerHTML = c.region[currentLang] || c.region.en;
+    document.getElementById('modal-desc').innerText = c.desc[currentLang] || c.desc.en;
+    document.getElementById('modal-employees').innerText = c.employees > 0 ? c.employees + '+' : '-';
+    document.getElementById('modal-events').innerText = c.events || '-';
+
+    // Populate customs/当地节日文化
+    var customsText = document.getElementById('modal-customs-text');
+    if (customsText && c.customs) {
+        var txt = c.customs[currentLang] || c.customs.en || '';
+        customsText.innerHTML = txt.replace(/\n/g, '<br><br>');
+    }
+
+    var grid = document.getElementById('image-grid');
+    var images = c.images || [];
+    var noImagesText = (i18n['modal.noImages'] && i18n['modal.noImages'][currentLang]) ? i18n['modal.noImages'][currentLang] : 'No images yet';
+    if (images.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center py-8 text-slate-500 text-sm">' + noImagesText + '</div>';
+    } else {
+        grid.innerHTML = images.map(function(img, i) {
+            return '<div class="gallery-item aspect-video rounded-xl overflow-hidden border border-slate-700 cursor-pointer relative group" onclick="openLightbox(window._countryImages,' + i + ')"><img src="' + img + '" alt="" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display=\'none\'"><div class="gallery-overlay absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg></div></div>';
+        }).join('');
+        window._countryImages = images;
+    }
+    document.getElementById('country-modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('country-modal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+document.addEventListener('keydown', function(e) {
+    var lb = document.getElementById('lightbox');
+    if (lb && !lb.classList.contains('hidden')) return;
+    if (e.key === 'Escape') closeModal();
+});
+
+// Carousel
+var currentSlide = 0;
+var carouselInterval;
+
+function initCarousel() {
+    var track = document.getElementById('carousel-track');
+    var indicator = document.getElementById('carousel-indicator');
+    if (!track) return;
+
+    track.innerHTML = carouselSlides.map(function(s, i) {
+        var title = s.title[currentLang] || s.title.en;
+        var subtitle = s.subtitle[currentLang] || s.subtitle.en;
+        return '<div class="carousel-slide relative h-[350px]"><img src="' + s.image + '" alt="" class="w-full h-full object-cover"><div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-slate-950 to-transparent"><h3 class="text-xl font-bold text-white mb-1">' + title + '</h3><p class="text-slate-300">' + subtitle + '</p></div></div>';
+    }).join('');
+
+    if (indicator) {
+        indicator.innerHTML = carouselSlides.map(function(_, i) {
+            return '<button class="h-2.5 rounded-full transition-all ' + (i === 0 ? 'w-8 bg-blue-500' : 'w-2.5 bg-white/30') + '" onclick="goToSlide(' + i + ')"></button>';
+        }).join('');
+    }
+    currentSlide = 0;
+    startCarousel();
+}
+
+function goToSlide(index) {
+    var track = document.getElementById('carousel-track');
+    var dots = document.querySelectorAll('#carousel-indicator button');
+    currentSlide = index;
+    track.style.transform = 'translateX(-' + (index * 100) + '%)';
+    dots.forEach(function(d, i) {
+        d.classList.toggle('w-8', i === index);
+        d.classList.toggle('w-2.5', i !== index);
+        d.classList.toggle('bg-blue-500', i === index);
+        d.classList.toggle('bg-white/30', i !== index);
+    });
+    clearInterval(carouselInterval);
+    startCarousel();
+}
+
+function startCarousel() {
+    clearInterval(carouselInterval);
+    carouselInterval = setInterval(function() {
+        currentSlide = (currentSlide + 1) % carouselSlides.length;
+        goToSlide(currentSlide);
+    }, 5000);
+}
+
+function openEventGallery(eventId) {
+    var evt = eventData[eventId];
+    if (!evt || !evt.images || evt.images.length === 0) {
+        var alertMsg = (i18n['alert.comingSoon'] && i18n['alert.comingSoon'][currentLang]) ? i18n['alert.comingSoon'][currentLang] : 'Images coming soon!';
+        alert(alertMsg);
+        return;
+    }
+    document.getElementById('lightbox-caption').innerText = evt.title[currentLang] || evt.title.en;
+    openLightbox(evt.images, 0);
+}
+
+function renderSpotlight2025() {
+    var grid = document.getElementById('spotlight-2025-grid');
+    if (!grid) return;
+    var posters = window.spotlight2025Images || [];
+    if (posters.length === 0) return;
+    grid.innerHTML = posters.map(function(src, i) {
+        return '<div class="aspect-[4/3] rounded-lg overflow-hidden border border-slate-700 cursor-pointer hover:border-blue-500 transition-all bg-slate-900" onclick="openLightbox(window._spot2025,' + i + ')"><div class="spotlight-img-container w-full h-full"><img src="' + src + '" alt="" class="w-full h-full object-contain hover:scale-105 transition-transform duration-500" loading="lazy" /></div></div>';
+    }).join('');
+    window._spot2025 = posters;
+}
+
+function renderSpotlight2026() {
+    var grid = document.getElementById('spotlight-2026-grid');
+    if (!grid) return;
+    var posters = window.spotlight2026Images || [];
+    if (posters.length === 0) return;
+    grid.innerHTML = posters.map(function(src, i) {
+        return '<div class="aspect-[4/3] rounded-lg overflow-hidden border border-slate-700 cursor-pointer hover:border-blue-500 transition-all bg-slate-900" onclick="openLightbox(window._spot2026,' + i + ')"><div class="spotlight-img-container w-full h-full"><img src="' + src + '" alt="" class="w-full h-full object-contain hover:scale-105 transition-transform duration-500" loading="lazy" /></div></div>';
+    }).join('');
+    window._spot2026 = posters;
+}
+
+</script>
+
+</body>
+</html>
