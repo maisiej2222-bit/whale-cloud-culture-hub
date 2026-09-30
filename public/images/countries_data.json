@@ -628,25 +628,15 @@
     "public/images/events/thanksgiving_2025/阿富汗1.jpg",
     "public/images/events/thanksgiving_2025/阿富汗3.jpg"
   ],
-  "spotlight_2025": [
-    "public/images/spotlight/2025_01.jpg",
-    "public/images/spotlight/2025_02.jpg",
-    "public/images/spotlight/2025_03.jpg",
-    "public/images/spotlight/2025_04.jpg",
-    "public/images/spotlight/2025_05.jpg",
-    "public/images/spotlight/2025_06.jpg",
-    "public/images/spotlight/2025_07.jpg",
-    "public/images/spotlight/2025_08.jpg",
-    "public/images/spotlight/2025_09.jpg",
-    "public/images/spotlight/2025_10.jpg",
-    "public/images/spotlight/2025_11.jpg",
-    "public/images/spotlight/2025_12.jpg"
-  ],
   "spotlight_2026": [
-    "public/images/spotlight/2026_01.png",
-    "public/images/spotlight/2026_02.jpg",
-    "public/images/spotlight/2026_03.png",
-    "public/images/spotlight/2026_04.jpg",
-    "public/images/spotlight/2026_05.jpg"
+    "public/images/spotlight/2026-01.png",
+    "public/images/spotlight/2026-02.jpg",
+    "public/images/spotlight/2026-03.png",
+    "public/images/spotlight/2026-04.jpg",
+    "public/images/spotlight/2026-05.jpg",
+    "public/images/spotlight/2026-06.jpg",
+    "public/images/spotlight/2026-07.png",
+    "public/images/spotlight/2026-08.png",
+    "public/images/spotlight/2026-09.jpg"
   ]
 }
