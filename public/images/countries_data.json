@@ -5,6 +5,7 @@
     "public/images/countries/saudi/沙特 (9).jpg"
   ],
   "netherlands": [
+    "public/images/countries/netherlands-2026-team-event.jpg",
     "public/images/countries/netherlands/20241220_141644.jpg",
     "public/images/countries/netherlands/20241220_142237.jpg",
     "public/images/countries/netherlands/20241220_174513.jpg",
@@ -46,6 +47,8 @@
     "public/images/countries/malaysia/IMG_9180.HEIC.jpg"
   ],
   "indonesia": [
+    "public/images/countries/indonesia-2026-822-01.jpg",
+    "public/images/countries/indonesia-2026-822-02.jpg",
     "public/images/countries/indonesia/20251222_170844.jpg",
     "public/images/countries/indonesia/3efea463e60fd619ed5a7c2de2f0fc7c.jpg",
     "public/images/countries/indonesia/IMG_20241220_123512.jpg",
@@ -116,6 +119,7 @@
     "public/images/countries/singapore/父亲节合照2.jpg"
   ],
   "india": [
+    "public/images/countries/india-2026-team-event.jpg",
     "public/images/countries/india/1735562585269.jpg",
     "public/images/countries/india/223fb982-b00c-4f16-9320-df88c9bd2c84.jpg.jpg",
     "public/images/countries/india/DINGTALK_IM_3680763358.JPG.jpg",
@@ -638,5 +642,8 @@
     "public/images/spotlight/2026-07.png",
     "public/images/spotlight/2026-08.png",
     "public/images/spotlight/2026-09.jpg"
+  ],
+  "sri-lanka": [
+    "public/images/countries/sri-lanka-2026-team-lunch.png"
   ]
 }
